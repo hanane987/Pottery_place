@@ -32,3 +32,43 @@ const Register = () => {
             setError('Error registering user');
         }
     };
+    return (
+        <div className={styles.loginContainer}>
+            <div className={styles.loginForm}>
+                <h2>Register</h2>
+                <form onSubmit={handleRegister}>
+                    <input
+                        type="text"
+                        placeholder="Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                    <select value={role} onChange={(e) => setRole(e.target.value)}>
+                        <option value="acheteur">Acheteur</option>
+                        <option value="vendeur">Vendeur</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                    <button type="submit">Register</button>
+                </form>
+                {error && <p className={styles.error}>{error}</p>}
+            </div>
+        </div>
+    );
+};
+
+export default Register;
