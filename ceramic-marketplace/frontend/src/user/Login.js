@@ -16,14 +16,24 @@ const Login = () => {
             return;
         }
     
-       
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Simple email regex
+        if (!emailPattern.test(email)) {
+            setError('Please enter a valid email address');
+            return;
+        }
         try {
             const response = await axios.post('http://localhost:5000/api/auth/login', { email, password });
-            localStorage.setItem('token', response.data.token); 
+            localStorage.setItem('token', response.data.token); // Store the token
             
-            
+            // Redirect based on user role
             const role = response.data.role;
-           
+            if (role === 'admin') {
+                navigate('/admin-dashboard'); 
+            } else if (role === 'vendeur') {
+                navigate('/vendeur-dashboard'); 
+            } else {
+                navigate('/acheteur-dashboard'); 
+            }
         } catch (err) {
             setError('Invalid credentials');
         }
