@@ -15,7 +15,15 @@ const Register = () => {
             setError('All fields are required');
             return;
         }
-   
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) {
+            setError('Please enter a valid email address');
+            return;
+        }
+    
+        if (password.length < 6) { 
+            setError('Password must be at least 6 characters long');
+            return;
         }
         try {
             await axios.post('http://localhost:5000/api/auth/register', { name, email, password, role });
