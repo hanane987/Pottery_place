@@ -3,15 +3,8 @@ import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Login from './user/Login';
 import Register from './user/Register';
-import AdminDashboard from './user/AdminDashboard'; // Import the Admin Dashboard
-import ManageProducts from './admin/ManageProducts'; // Import the Manage Products component
-import LandingPage from './user/AcheteurDashboard'; 
-import ProductPage from './product/ProductPage'; // Import the ProductPage component
-import Main from './user/FurniroPage';
-import Index from './user/Shop';
-import About from './user/About';
-import Contact from './user/Contact';
-import ContactMessages from './user/ContactMessages';
+;
+
 
 const App = () => {
     return (
@@ -21,14 +14,7 @@ const App = () => {
             
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
-                <Route path="/admin-dashboard" element={<AdminDashboard />} /> {/* Add route for Admin Dashboard */}
-                    <Route path="manage-products" element={<ManageProducts />} /> {/* Relative path */}
-                    <Route path="/product/:id"element={<ProductPage />} /> {/* Route for the product page */}
-                    <Route path="/furniro" element={<Main />} />
-                    <Route path="/shop" element={<Index />} />
-                    <Route path="/about" element={<About />} />
-                    <Route path="/contact" element={<Contact />} />
-                    <Route path="/contact-messages" element={<ContactMessages />} />
+               
             </Routes>
         </Router>
     );
