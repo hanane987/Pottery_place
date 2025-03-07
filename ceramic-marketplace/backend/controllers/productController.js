@@ -20,7 +20,33 @@ exports.getProducts = async (req, res) => {
             { description: { $regex: search, $options: 'i' } } 
         ];
     }
-}
+
+    if (category) {
+        const categoryIds = categories
+            .filter(cat => cat.name === category)
+            .map(cat => cat.id);
+        query.categorie_id = { $in: categoryIds }; 
+    }
+
+    if (inStock) {
+        query.quantite_stock = { $gt: 0 }; 
+    }
+
+    try {
+        let products = await Product.find(query);
+        if (sort === 'asc') {
+            products.sort((a, b) => a.prix - b.prix);
+        } else if (sort === 'desc') {
+            products.sort((a, b) => b.prix - a.prix);
+        }
+
+        res.json(products);
+    } catch (error) {
+        console.error('Error fetching products:', error);
+        res.status(500).json({ message: 'Internal server error', error: error.message });
+    }
+};
+
 exports.createProduct = async (req, res) => {
     console.log('Files uploaded:', req.files);
     try {
