@@ -21,3 +21,26 @@ exports.getProducts = async (req, res) => {
         ];
     }
 }
+exports.createProduct = async (req, res) => {
+    console.log('Files uploaded:', req.files);
+    try {
+        const { nom, description, prix, quantite_stock, artisan_id, etat } = req.body;
+        const images = req.files.map(file => `/images/${file.filename}`); 
+
+        const newProduct = new Product({
+            nom,
+            description,
+            prix,
+            quantite_stock,
+            artisan_id,
+            etat,
+            images, 
+        });
+
+        await newProduct.save();
+        res.status(201).json(newProduct);
+    } catch (error) {
+        console.error('Error creating product:', error);
+        res.status(500).json({ message: 'Error creating product' });
+    }
+};
