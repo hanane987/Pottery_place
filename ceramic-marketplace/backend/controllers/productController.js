@@ -70,3 +70,29 @@ exports.createProduct = async (req, res) => {
         res.status(500).json({ message: 'Error creating product' });
     }
 };
+
+
+exports.updateProduct = async (req, res) => {
+    console.log('Files uploaded:', req.files); 
+
+    try {
+        const { id } = req.params;
+        const { nom, description, prix, quantite_stock, artisan_id, etat } = req.body;
+        const images = req.files ? req.files.map(file => `/images/${file.filename}`) : []; 
+
+        const updatedProduct = await Product.findByIdAndUpdate(id, {
+            nom,
+            description,
+            prix,
+            quantite_stock,
+            artisan_id,
+            etat,
+            images: images.length ? images : undefined 
+        }, { new: true });
+
+        res.status(200).json(updatedProduct);
+    } catch (error) {
+        console.error('Error updating product:', error);
+        res.status(500).json({ message: 'Error updating product' });
+    }
+};
