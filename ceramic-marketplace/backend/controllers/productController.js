@@ -96,3 +96,16 @@ exports.updateProduct = async (req, res) => {
         res.status(500).json({ message: 'Error updating product' });
     }
 };
+
+exports.deleteProduct = async (req, res) => {
+    try {
+        const deletedProduct = await Product.findByIdAndDelete(req.params.id);
+        if (!deletedProduct) {
+            return res.status(404).json({ message: 'Product not found' });
+        }
+        res.status(204).send(); 
+    } catch (error) {
+        console.error('Error deleting product:', error); 
+        res.status(400).json({ message: error.message });
+    }
+};
