@@ -198,3 +198,143 @@
     color: #898989;
   }
   
+  .stock-filter {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 16px;
+    margin-left: 20px;
+  }
+  
+  .stock-filter input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+  }
+  
+  .view-options {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    font-size: 16px;
+    flex-grow: 1;
+  }
+  
+  .filter-right {
+    display: flex;
+    gap: 17px;
+    font-size: 20px;
+    flex: 1;
+    align-items: center;
+  }
+  
+  .filter-label {
+    align-self: center;
+  }
+  
+  .filter-select {
+    background-color: white;
+    color: rgba(159, 159, 159, 1);
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .category-select {
+    width: auto;
+    padding: 13px 18px;
+  }
+  
+  .sort-select {
+    padding: 13px 30px;
+  }
+  
+  /* Featured Title */
+  .featured-title {
+    font-size: 32px;
+    font-weight: 500;
+    color: #333;
+    text-align: center;
+    margin-bottom: 30px;
+    margin-top: 30px;
+  }
+  
+  /* Product Grid */
+  .product-grid-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 46px;
+  }
+  
+  .product-grid-container {
+    align-self: stretch;
+    display: flex;
+    width: 1440px;
+    flex-direction: column;
+    align-items: stretch;
+    margin: auto;
+  }
+  
+  .product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .product-card {
+    width: 285px;
+    min-width: 240px;
+    margin: auto;
+    cursor: pointer;
+    transition: transform 0.3s;
+  }
+  
+  .product-card:hover {
+    transform: translateY(-5px);
+  }
+  
+  .product-image-container {
+    position: relative;
+    aspect-ratio: 0.947;
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .product-image {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+    inset: 0;
+  }
+  
+  .product-badge {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+  }
+  
+  .discount-red {
+    background-color: #E97171;
+  }
+  
+  .out-of-stock {
+    background-color: #333;
+    width: auto;
+    height: auto;
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+  
