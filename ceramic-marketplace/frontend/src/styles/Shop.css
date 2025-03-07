@@ -1,0 +1,99 @@
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
+    font-family: 'Poppins', sans-serif;
+  }
+  
+  .shop-page {
+    background-color: white;
+    overflow-x: hidden;
+  }
+  
+ 
+  .header {
+    background-color: white;
+    width: 100%;
+    padding: 30px 67px;
+  }
+  
+  .nav-container {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .logo-container {
+    width: 21%;
+  }
+  
+  .logo-link {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 34px;
+    color: black;
+    font-weight: bold;
+    white-space: nowrap;
+    justify-content: center;
+    text-decoration: none;
+  }
+  
+  .logo-image {
+    aspect-ratio: 1.56;
+    object-fit: contain;
+    width: 50px;
+    align-self: stretch;
+    flex-shrink: 0;
+  }
+  
+  .logo-text {
+    align-self: stretch;
+  }
+  
+  .nav-links {
+    width: 50%;
+    margin-left: 20px;
+    display: flex;
+    gap: 73px;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  
+  .nav-link {
+    color: black;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .nav-link:hover, .nav-link.active {
+    color: #B88E2F;
+  }
+  
+  .nav-icons {
+    width: 29%;
+    margin-left: 20px;
+    display: flex;
+    gap: 45px;
+    align-items: center;
+  }
+  
+  .icon-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+  }
+  
+  .nav-icon {
+    aspect-ratio: 1;
+    object-fit: contain;
+    width: 28px;
+    flex-shrink: 0;
+  }
+  
