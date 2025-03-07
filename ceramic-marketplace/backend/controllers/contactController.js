@@ -13,3 +13,13 @@ exports.storeContactMessage = async (req, res) => {
         res.status(500).send('Error storing message');
     }
 };
+
+exports.getContactMessages = async (req, res) => {
+    try {
+        const messages = await ContactMessage.find();
+        res.status(200).json(messages);
+    } catch (error) {
+        console.error('Error fetching messages:', error);
+        res.status(500).send('Error fetching messages');
+    }
+};
