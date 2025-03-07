@@ -1,0 +1,313 @@
+import React, { useState } from 'react';
+import '../styles/Contact.css';
+
+const App = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    try {
+        const response = await fetch('http://localhost:5000/api/contact', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (response.ok) {
+            alert('Message stored successfully!');
+            setFormData({ name: '', email: '', subject: '', message: '' }); 
+        } else {
+            alert('Failed to store message. Please try again.');
+        }
+    } catch (error) {
+        console.error('Error storing message:', error);
+        alert('An error occurred. Please try again later.');
+    }
+};
+return (
+    <div className="app-container">
+      {/* Header */}
+      <header className="header">
+        <div className="logo">
+          <img
+            src="https://cdn.builder.io/api/v1/image/assets/TEMP/76579c492ffbf19367381fac77e68c3f395f64d4"
+            alt="Logo"
+            className="logo-image"
+          />
+          <div className="logo-text">Furniro</div>
+        </div>
+
+        <nav className="nav-menu">
+          <a href="/" className="nav-link">Home</a>
+          <a href="/shop" className="nav-link">Shop</a>
+          <a href="/about" className="nav-link">About</a>
+          <a href="/contact" className="nav-link active">Contact</a>
+        </nav>
+
+        <div className="header-icons">
+          <button className="icon-btn" aria-label="User Account">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M23.333 14V8.16666H25.6663V15.1667H23.333M23.333 19.8333H25.6663V17.5H23.333M11.6663 15.1667C14.7813 15.1667 20.9997 16.73 20.9997 19.8333V23.3333H2.33301V19.8333C2.33301 16.73 8.55134 15.1667 11.6663 15.1667ZM11.6663 4.66666C12.904 4.66666 14.091 5.15832 14.9662 6.03349C15.8413 6.90866 16.333 8.09565 16.333 9.33332C16.333 10.571 15.8413 11.758 14.9662 12.6332C14.091 13.5083 12.904 14 11.6663 14C10.4287 14 9.24168 13.5083 8.36651 12.6332C7.49134 11.758 6.99967 10.571 6.99967 9.33332C6.99967 8.09565 7.49134 6.90866 8.36651 6.03349C9.24168 5.15832 10.4287 4.66666 11.6663 4.66666Z" fill="black" />
+            </svg>
+          </button>
+          <button className="icon-btn" aria-label="Search">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24.4997 24.5L19.266 19.257M22.1663 12.25C22.1663 14.8801 21.1216 17.4024 19.2618 19.2622C17.4021 21.1219 14.8797 22.1667 12.2497 22.1667C9.61961 22.1667 7.09727 21.1219 5.23753 19.2622C3.3778 17.4024 2.33301 14.8801 2.33301 12.25C2.33301 9.61995 3.3778 7.0976 5.23753 5.23787C7.09727 3.37813 9.61961 2.33334 12.2497 2.33334C14.8797 2.33334 17.4021 3.37813 19.2618 5.23787C21.1216 7.0976 22.1663 9.61995 22.1663 12.25Z" stroke="black" strokeWidth="2" strokeLinecap="round" />
+            </svg>
+          </button>
+          <button className="icon-btn" aria-label="Favorites">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8.16634 3.5C4.94517 3.5 2.33301 6.08533 2.33301 9.275C2.33301 11.8498 3.35384 17.9608 13.4023 24.1383C13.5823 24.2479 13.789 24.3058 13.9997 24.3058C14.2104 24.3058 14.417 24.2479 14.597 24.1383C24.6455 17.9608 25.6663 11.8498 25.6663 9.275C25.6663 6.08533 23.0542 3.5 19.833 3.5C16.6118 3.5 13.9997 7 13.9997 7C13.9997 7 11.3875 3.5 8.16634 3.5Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </button>
+          <button className="icon-btn" aria-label="Cart">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M25.2359 19.1926H8.95273L9.77031 17.5273L23.3547 17.5027C23.8141 17.5027 24.2078 17.1746 24.2898 16.7207L26.1711 6.19062C26.2203 5.91445 26.1465 5.63008 25.966 5.41406C25.8768 5.30775 25.7656 5.22211 25.64 5.16309C25.5144 5.10407 25.3774 5.07308 25.2387 5.07227L7.95742 5.01484L7.80977 4.32031C7.7168 3.87734 7.31758 3.55469 6.86367 3.55469H2.63906C2.38307 3.55469 2.13756 3.65638 1.95654 3.8374C1.77552 4.01841 1.67383 4.26393 1.67383 4.51992C1.67383 4.77592 1.77552 5.02143 1.95654 5.20245C2.13756 5.38346 2.38307 5.48516 2.63906 5.48516H6.08164L6.72695 8.55312L8.31562 16.2449L6.27031 19.5836C6.1641 19.727 6.10012 19.8972 6.08562 20.075C6.07113 20.2528 6.10669 20.4312 6.18828 20.5898C6.35234 20.9152 6.6832 21.1203 7.04961 21.1203H8.7668C8.40071 21.6065 8.20298 22.1988 8.20352 22.8074C8.20352 24.3551 9.46133 25.6129 11.009 25.6129C12.5566 25.6129 13.8145 24.3551 13.8145 22.8074C13.8145 22.1977 13.6121 21.6043 13.2512 21.1203H17.6562C17.2902 21.6065 17.0924 22.1988 17.093 22.8074C17.093 24.3551 18.3508 25.6129 19.8984 25.6129C21.4461 25.6129 22.7039 24.3551 22.7039 22.8074C22.7039 22.1977 22.5016 21.6043 22.1406 21.1203H25.2387C25.7691 21.1203 26.2039 20.6883 26.2039 20.1551C26.2023 19.8994 26.0996 19.6546 25.9183 19.4743C25.737 19.294 25.4917 19.1927 25.2359 19.1926Z" fill="black" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <main>
+        {/* Hero Section */}
+        <section className="hero-section">
+          <div className="hero-content">
+            <img
+              src="https://cdn.builder.io/api/v1/image/assets/TEMP/10b7162bd4730a96f4e62ca9e02d654991331678"
+              alt="Contact Icon"
+              className="hero-icon"
+            />
+            <h1 className="hero-title">Contact</h1>
+            <nav className="breadcrumb">
+              <a href="/" className="breadcrumb-link">Home</a>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M6 15L11 10L6 5L7 3L14 10L7 17L6 15Z" fill="black" />
+              </svg>
+              <span className="breadcrumb-current">Contact</span>
+            </nav>
+          </div>
+        </section>
+
+        {/* Contact Form Section */}
+        <section className="contact-section">
+          <div className="contact-header">
+            <h2 className="contact-title">Get In Touch With Us</h2>
+            <p className="contact-subtitle">
+              For More Information About Our Product & Services. Please Feel Free To
+              Drop Us An Email. Our Staff Always Be There To Help You Out. Do Not
+              Hesitate!
+            </p>
+          </div>
+
+          <div className="contact-container">
+            <div className="contact-info">
+              <div className="info-item">
+                <svg className="info-icon" width="22" height="28" viewBox="0 0 22 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M11 0.120087C8.08369 0.123477 5.28779 1.26659 3.22564 3.29867C1.16348 5.33075 0.00345217 8.08587 1.17029e-05 10.9597C-0.00348119 13.3081 0.774992 15.5929 2.21601 17.4634C2.21601 17.4634 2.51601 17.8527 2.56501 17.9088L11 27.7118L19.439 17.9039C19.483 17.8517 19.784 17.4634 19.784 17.4634L19.785 17.4605C21.2253 15.5907 22.0034 13.3071 22 10.9597C21.9966 8.08587 20.8365 5.33075 18.7744 3.29867C16.7122 1.26659 13.9163 0.123477 11 0.120087ZM11 14.9013C10.2089 14.9013 9.43553 14.6702 8.77773 14.237C8.11993 13.8039 7.60724 13.1883 7.30449 12.4681C7.00174 11.7478 6.92253 10.9553 7.07687 10.1907C7.23121 9.42608 7.61217 8.72374 8.17158 8.17249C8.73099 7.62124 9.44373 7.24583 10.2197 7.09374C10.9956 6.94165 11.7998 7.01971 12.5307 7.31804C13.2616 7.61638 13.8864 8.12159 14.3259 8.7698C14.7654 9.418 15 10.1801 15 10.9597C14.9987 12.0047 14.5768 13.0065 13.827 13.7454C13.0771 14.4843 12.0605 14.9 11 14.9013Z" fill="black" />
+                </svg>
+                <div>
+                  <h3 className="info-title">Address</h3>
+                  <p className="info-text">236 5th SE Avenue, New York NY10000, United States</p>
+                </div>
+              </div>
+
+              <div className="info-item">
+                <svg className="info-icon" width="30" height="30" viewBox="0 0 30 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M25.6091 21.425L20.5279 16.805C20.2877 16.5867 19.972 16.4703 19.6476 16.4803C19.3232 16.4903 19.0154 16.626 18.7891 16.8587L15.7979 19.935C15.0779 19.7975 13.6304 19.3462 12.1404 17.86C10.6504 16.3687 10.1991 14.9175 10.0654 14.2025L13.1391 11.21C13.3721 10.9839 13.508 10.676 13.5181 10.3515C13.5281 10.027 13.4115 9.71129 13.1929 9.47124L8.5741 4.39124C8.35541 4.15044 8.05145 4.00437 7.72679 3.98407C7.40214 3.96376 7.08235 4.07082 6.83535 4.28249L4.12285 6.60874C3.90674 6.82564 3.77775 7.11431 3.76035 7.41999C3.7416 7.73249 3.3841 15.135 9.1241 20.8775C14.1316 25.8837 20.4041 26.25 22.1316 26.25C22.3841 26.25 22.5391 26.2425 22.5804 26.24C22.886 26.2229 23.1745 26.0933 23.3904 25.8762L25.7154 23.1625C25.9279 22.9163 26.0357 22.5968 26.0159 22.2721C25.996 21.9475 25.85 21.6435 25.6091 21.425Z" fill="black" />
+                </svg>
+                <div>
+                  <h3 className="info-title">Phone</h3>
+                  <p className="info-text">
+                    Mobile: +(84) 546-6789
+                    <br />
+                    Hotline: +(84) 456-6789
+                  </p>
+                </div>
+              </div>
+
+              <div className="info-item">
+                <svg className="info-icon" width="23" height="23" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M23 11.5C23 14.55 21.7884 17.4751 19.6317 19.6317C17.4751 21.7884 14.55 23 11.5 23C8.45001 23 5.52494 21.7884 3.36827 19.6317C1.2116 17.4751 0 14.55 0 11.5C0 8.45001 1.2116 5.52494 3.36827 3.36827C5.52494 1.2116 8.45001 0 11.5 0C14.55 0 17.4751 1.2116 19.6317 3.36827C21.7884 5.52494 23 8.45001 23 11.5ZM11.5 5.03125C11.5 4.84063 11.4243 4.65781 11.2895 4.52302C11.1547 4.38823 10.9719 4.3125 10.7812 4.3125C10.5906 4.3125 10.4078 4.38823 10.273 4.52302C10.1382 4.65781 10.0625 4.84063 10.0625 5.03125V12.9375C10.0625 13.0642 10.0961 13.1886 10.1597 13.2982C10.2233 13.4077 10.3147 13.4985 10.4247 13.5614L15.456 16.4364C15.6211 16.5256 15.8146 16.5467 15.995 16.4952C16.1755 16.4437 16.3287 16.3236 16.4218 16.1607C16.5149 15.9977 16.5406 15.8048 16.4933 15.6232C16.4461 15.4415 16.3297 15.2856 16.169 15.1886L11.5 12.5206V5.03125Z" fill="black" />
+                </svg>
+                <div>
+                  <h3 className="info-title">Working Time</h3>
+                  <p className="info-text">
+                    Monday-Friday: 9:00 - 22:00
+                    <br />
+                    Saturday-Sunday: 9:00 - 21:00
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <form className="contact-form" onSubmit={handleSubmit}>
+              <div className="form-group">
+                <label className="form-label">Your name</label>
+                <input
+                  type="text"
+                  name="name"
+                  placeholder="Abc"
+                  className="form-input"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Email address</label>
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Abc@def.com"
+                  className="form-input"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Subject</label>
+                <input
+                  type="text"
+                  name="subject"
+                  placeholder="This is an optional"
+                  className="form-input"
+                  value={formData.subject}
+                  onChange={handleChange}
+                />
+              </div>
+
+              <div className="form-group">
+                <label className="form-label">Message</label>
+                <textarea
+                  name="message"
+                  placeholder="Hi! i'd like to ask about"
+                  className="form-textarea"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
+                />
+              </div>
+
+              <button type="submit" className="submit-button">
+                Submit
+              </button>
+            </form>
+          </div>
+        </section>
+
+        {/* Feature Grid Section */}
+        <section className="features-section">
+          <div className="feature-item">
+            <svg className="feature-icon" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M49.3547 3.51562C48.0744 3.51562 46.8741 3.86121 45.839 4.46156V1.75781C45.839 0.787031 45.052 0 44.0812 0H15.9562C14.9853 0 14.1983 0.787031 14.1983 1.75781V4.48301C13.155 3.8693 11.941 3.51562 10.6455 3.51562C6.76848 3.51562 3.61426 6.66984 3.61426 10.5469C3.61426 13.5041 4.49059 16.3615 6.14844 18.8102C8.97078 22.9789 12.4511 24.0607 15.331 25.2127C16.9916 29.348 20.3496 32.6252 24.5384 34.1769L23.2422 42.4219H22.9875C20.0797 42.4219 17.714 44.7875 17.714 47.6953V56.4844H15.9562C14.9854 56.4844 14.1984 57.2714 14.1984 58.2422C14.1984 59.213 14.9854 60 15.9562 60H44.0812C45.052 60 45.839 59.213 45.839 58.2422C45.839 57.2714 45.052 56.4844 44.0812 56.4844H42.3234V47.6953C42.3234 44.7875 39.9577 42.4219 37.05 42.4219H36.7952L35.4991 34.177C39.6941 32.623 43.0558 29.3386 44.7139 25.1948C47.4344 24.1066 51.0005 23.0217 53.8518 18.8102C55.5097 16.3615 56.386 13.504 56.386 10.5469C56.3859 6.66984 53.2317 3.51562 49.3547 3.51562Z" fill="#242424" />
+            </svg>
+            <div className="feature-content">
+              <h3 className="feature-title">High Quality</h3>
+              <p className="feature-text">crafted from top materials</p>
+            </div>
+          </div>
+
+          <div className="feature-item">
+            <svg className="feature-icon" width="61" height="60" viewBox="0 0 61 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M57.119 21.2611C56.3273 18.8096 56.6648 15.1295 54.607 12.2881C52.533 9.42425 48.9259 8.61027 46.889 7.12058C44.8736 5.6466 42.9986 2.43906 39.6085 1.33281C36.314 0.25773 32.9451 1.7166 30.333 1.7166C27.7213 1.7166 24.3526 0.257378 21.0575 1.33269C17.668 2.43871 15.7914 5.64695 13.7773 7.12023C11.7427 8.60816 8.13289 9.42437 6.05926 12.2877C4.0032 15.1268 4.3373 18.8153 3.54699 21.261C2.79488 23.5887 0.333008 26.3823 0.333008 30.0002C0.333008 33.6202 2.79207 36.403 3.54699 38.7392C4.33871 41.1907 4.00121 44.8708 6.05902 47.7122C8.13289 50.5762 11.7399 51.39 13.777 52.8798C15.792 54.3536 17.6674 57.5614 21.0575 58.6675C24.3498 59.7419 27.7239 58.2837 30.333 58.2837C32.9384 58.2837 36.3205 59.7403 39.6085 58.6676C42.9982 57.5616 44.8735 54.3541 46.8887 52.8801C48.9233 51.3921 52.5331 50.5759 54.6068 47.7126C56.6629 44.8734 56.3286 41.1852 57.119 38.7393C57.8711 36.4115 60.333 33.6178 60.333 30.0002C60.333 26.3803 57.8745 23.5983 57.119 21.2611ZM52.6587 37.2979C51.7359 40.1543 51.9777 43.3511 50.8105 44.9629C49.6276 46.5961 46.5199 47.3421 44.1219 49.0962C41.7501 50.8307 40.0878 53.5803 38.1545 54.2111C36.3254 54.808 33.3446 53.596 30.3331 53.596C27.2996 53.596 24.3495 54.8106 22.5117 54.2111C20.5786 53.5803 18.9186 50.8326 16.5443 49.0961C14.1604 47.3527 11.035 46.5913 9.85555 44.9627C8.69211 43.3562 8.92473 40.1373 8.0075 37.298C7.10844 34.5161 5.02051 32.1073 5.02051 30.0002C5.02051 27.8909 7.10656 25.4904 8.00727 22.7024C8.93012 19.8461 8.68836 16.6491 9.85555 15.0374C11.0377 13.4052 14.1478 12.6568 16.5443 10.9041C18.9235 9.16398 20.5754 6.42097 22.5114 5.78921C24.339 5.19296 27.3295 6.40433 30.3329 6.40433C33.3719 6.40433 36.3146 5.18886 38.1543 5.78921C40.0872 6.41992 41.7486 9.16867 44.1219 10.9042C46.5054 12.6476 49.631 13.409 50.8105 15.0375C51.9741 16.6443 51.7402 19.8599 52.6585 22.7022V22.7023C53.5576 25.4842 55.6455 27.893 55.6455 30.0002C55.6455 32.1094 53.5595 34.5099 52.6587 37.2979ZM41.131 22.4773C42.0464 23.3927 42.0464 24.8766 41.131 25.7918L29.3998 37.523C28.4845 38.4384 27.0004 38.4382 26.0852 37.523L19.5351 30.9729C18.6198 30.0576 18.6196 28.5736 19.535 27.6584C20.4504 26.7432 21.9345 26.743 22.8495 27.6584L27.7425 32.5512L37.8162 22.4774C38.7316 21.5621 40.2157 21.5621 41.131 22.4773Z" fill="#242424" />
+            </svg>
+            <div className="feature-content">
+              <h3 className="feature-title">Warranty Protection</h3>
+              <p className="feature-text">Over 2 years</p>
+            </div>
+          </div>
+
+          <div className="feature-item">
+            <svg className="feature-icon" width="61" height="60" viewBox="0 0 61 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M56.0149 31.102V3.77976C56.0149 2.80502 55.2247 2.01477 54.2499 2.01477H6.9621C5.98736 2.01477 5.19711 2.80502 5.19711 3.77976V33.2801C4.34568 33.4042 3.51331 33.7347 2.77696 34.2814C0.455644 35.9274 -0.0933855 39.6111 1.85104 41.8828L9.80091 51.5205C14.7219 57.2799 19.9495 57.9855 27.7208 57.9855C34.3898 57.9855 37.3713 58.015 43.1835 56.6906L48.8429 55.337C49.7606 56.6185 51.2175 57.4486 52.8552 57.4486H55.6432C58.4133 57.4486 60.667 55.0745 60.667 52.1562V36.3785C60.6671 33.5921 58.6119 31.3032 56.0149 31.102ZM48.0817 34.7327L45.73 33.5383C41.8634 31.5866 37.3929 31.5143 33.4652 33.3404C32.3936 33.7619 30.0564 35.176 28.8441 35.1287H20.6837C17.9769 35.1287 15.7747 37.3308 15.7747 40.0377V41.3249C15.7595 41.3089 15.7436 41.2937 15.7287 41.2774L9.90128 34.9521C9.54864 34.5693 9.15245 34.249 8.72721 33.992V16.4811H23.1711V22.9511C23.1711 23.9258 23.9613 24.7161 24.9361 24.7161H36.0732C37.048 24.7161 37.8382 23.9258 37.8382 22.9511V16.4811H52.4851V31.1019C50.4229 31.2612 48.7033 32.7365 48.0817 34.7327ZM26.7009 16.4811H34.3081V21.1861H26.7009V16.4811ZM52.485 12.9511H37.8382V5.54475H52.4851V12.9511H52.485ZM34.3083 5.54475V12.9512H26.701V5.54475H34.3083ZM23.1709 5.54475V12.9512H8.72709V5.54475H23.1709ZM42.3643 53.2569C36.9952 54.4866 33.7616 54.4368 27.7842 54.4368C20.4889 54.4368 16.9639 54.3189 12.5242 49.2741L4.57431 39.6365C3.1915 37.8358 5.69613 35.7102 7.3051 37.3436L13.1325 43.6691C14.6726 45.2942 16.6107 46.1886 18.9994 46.2412H35.1559C36.1307 46.2412 36.9209 45.4509 36.9209 44.4762C36.9209 43.5014 36.1307 42.7112 35.1559 42.7112H19.3046V40.0375C19.3046 39.2771 19.9231 38.6584 20.6836 38.6584H28.844C30.6824 38.7901 33.3359 37.255 34.9533 36.5411C37.895 35.1734 41.2433 35.2275 44.1354 36.6873L47.8317 38.5648V51.949L42.3643 53.2569ZM57.1371 52.1561C57.1371 53.1279 56.467 53.9185 55.6433 53.9185H52.8554C52.0317 53.9185 51.3617 53.1279 51.3617 52.1561V36.3785C51.3617 35.4067 52.0318 34.616 52.8554 34.616H55.6433C56.467 34.616 57.1371 35.4066 57.1371 36.3785V52.1561Z" fill="#242424" />
+            </svg>
+            <div className="feature-content">
+              <h3 className="feature-title">Free Shipping</h3>
+              <p className="feature-text">Order over 150 $</p>
+            </div>
+          </div>
+
+          <div className="feature-item">
+            <svg className="feature-icon" width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M54.6935 23.9628C54.2992 10.6825 43.3741 0 29.9999 0C16.6257 0 5.70059 10.6825 5.30612 23.9628L3.5293 25.7396V37.7898L5.294 39.5545V47.7647C5.294 52.5652 9.19941 56.4706 13.9999 56.4706H16.1858C16.9142 58.5246 18.8758 60 21.1764 60H24.7058C27.0079 60 28.9705 58.5225 29.6978 56.4664C29.7986 56.4681 29.8997 56.4706 29.9999 56.4706C38.522 56.4706 45.6526 50.3981 47.2921 42.3529H51.9073L56.4705 37.7898V25.7396L54.6935 23.9628ZM29.9999 3.52941C40.4741 3.52941 49.1953 11.174 50.8806 21.1765H47.2921C45.6526 13.1313 38.522 7.05882 29.9999 7.05882C21.4778 7.05882 14.3472 13.1313 12.7077 21.1765H9.11918C10.8045 11.174 19.5257 3.52941 29.9999 3.52941ZM43.6708 21.1765C37.9662 21.1594 33.9368 21.5068 30.6147 16.6506L29.0015 14.2926L27.6152 16.7907C25.5952 20.4306 22.8748 21.1765 19.4117 21.1765H16.3289C17.9001 15.0944 23.4337 10.5882 29.9999 10.5882C36.5661 10.5882 42.0997 15.0944 43.6708 21.1765ZM12.3528 38.8235H9.55436L7.05871 36.3279V27.2015L9.55436 24.7059H12.3528V38.8235ZM8.82341 47.7647V42.3529H12.7042C13.3686 45.6441 14.9581 48.6652 17.3129 51.0916C16.8193 51.6191 16.4321 52.2467 16.1858 52.9412H13.9999C11.1455 52.9412 8.82341 50.6191 8.82341 47.7647ZM24.7058 56.4706H21.1764C20.2032 56.4706 19.4117 55.6791 19.4117 54.7059C19.4117 53.7328 20.2032 52.9412 21.1764 52.9412H24.7058C25.6788 52.9412 26.4705 53.7328 26.4705 54.7059C26.4705 55.6791 25.6788 56.4706 24.7058 56.4706ZM44.1175 38.8235C44.1175 46.608 37.7844 52.9412 29.9999 52.9412C29.8987 52.9412 29.7967 52.9392 29.6948 52.9368C28.9652 50.8851 27.0047 49.4118 24.7058 49.4118C21.0822 49.4198 21.14 49.3936 20.6884 49.4352C17.6246 46.7498 15.8822 42.9248 15.8822 38.8235V24.7059H19.4117C22.5348 24.7059 26.3384 24.1909 29.2826 20.6076C33.1673 24.6786 37.9146 24.7059 42.1761 24.7059H44.1175V38.8235ZM52.9411 36.3279L50.4454 38.8235H47.6469V24.7059H50.4454L52.9411 27.2015V36.3279Z" fill="#242424" />
+            </svg>
+            <div className="feature-content">
+              <h3 className="feature-title">24 / 7 Support</h3>
+              <p className="feature-text">Dedicated support</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="footer">
+        <div className="footer-content">
+          <div className="footer-about">
+            <div className="footer-logo">Funiro.</div>
+            <div className="footer-address">
+              400 University Drive Suite 200 Coral Gables,
+              <br />
+              FL 33134 USA
+            </div>
+          </div>
+
+          <div className="footer-links">
+            <div className="footer-column">
+              <h3 className="footer-heading">Links</h3>
+              <a href="/" className="footer-link">Home</a>
+              <a href="/shop" className="footer-link">Shop</a>
+              <a href="/about" className="footer-link">About</a>
+              <a href="/contact" className="footer-link">Contact</a>
+            </div>
+
+            <div className="footer-column">
+              <h3 className="footer-heading">Help</h3>
+              <a href="/payment" className="footer-link">Payment Options</a>
+              <a href="/returns" className="footer-link">Returns</a>
+              <a href="/privacy" className="footer-link">Privacy Policies</a>
+            </div>
+
+            <div className="footer-column">
+              <h3 className="footer-heading">Newsletter</h3>
+              <form className="footer-newsletter" onSubmit={(e) => e.preventDefault()}>
+                <input
+                  type="email"
+                  placeholder="Enter Your Email Address"
+                  className="footer-input"
+                />
+                <button type="submit" className="footer-button">
+                  SUBSCRIBE
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div className="footer-copyright">
+          2023 furino. All rights reverved
+        </div>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
