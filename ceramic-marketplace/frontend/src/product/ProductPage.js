@@ -104,4 +104,52 @@ const ManageProducts = () => {
             console.error('Error deleting product:', error.response ? error.response.data : error.message);
         }
     };
-}
+    return (
+        <div className={styles.container}>
+            <h2>Manage Products</h2>
+            <form onSubmit={handleSubmit} className={styles.form}>
+                <input type="hidden" name="id" value={formData.id} />
+                <input type="text" name="nom" placeholder="Nom" value={formData.nom} onChange={handleChange} required />
+                <textarea name="description" placeholder="Description" value={formData.description} onChange={handleChange} required />
+                <input type="number" name="prix" placeholder="Prix" value={formData.prix} onChange={handleChange} required />
+                <input type="number" name="quantite_stock" placeholder="Quantité en stock" value={formData.quantite_stock} onChange={handleChange} required />
+                
+                <select name="artisan_id" value={formData.artisan_id} onChange={handleChange} required style={{ color: 'black' }}>
+                    <option value="">Select Artisan</option>
+                    {artisans.map(artisan => (
+                        <option key={artisan._id} value={artisan._id}>{artisan.nom}</option> // Ensure artisan._id is unique
+                    ))}
+                </select>
+
+                <select name="categorie_id" value={formData.categorie_id} onChange={handleChange} required>
+    <option value="">Select Category</option>
+    {categories.map(category => (
+        <option key={category.id} value={category.id}>{category.name}</option> // Static categories
+    ))}
+</select>
+
+                <input type="file" name="images" multiple onChange={handleImageChange} accept="image/*" />
+                <select name="etat" value={formData.etat} onChange={handleChange}>
+                    <option value="disponible">Disponible</option>
+                    <option value="épuisé">Épuisé</option>
+                </select>
+                <button type="submit" className={styles.submitButton}>Save Product</button>
+            </form>
+            <h3>Product List</h3>
+            <ul className={styles.productList}>
+                {products.map(product => (
+                    <li key={product._id} className={styles.productItem}>
+<img src={Array.isArray(product.images) ? product.images[0] : product.images} alt={product.nom} className={styles.productImage} />                        <div className={styles.productDetails}>
+                            <h4>{product.nom}</h4>
+                            <p>{product.prix} €</p>
+                            <button onClick={() => handleEdit(product)} className={styles.editButton}><i className="fas fa-edit"></i> Edit</button>
+                            <button onClick={() => handleDelete(product._id)} className={styles.deleteButton}><i className="fas fa-trash"></i> Delete</button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+export default ManageProducts;
