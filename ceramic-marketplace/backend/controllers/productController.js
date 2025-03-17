@@ -1,4 +1,30 @@
 const Product = require('../models/Product');
+const Minio = require('minio');
+
+// Configure MinIO client
+const minioClient = new Minio.Client({
+    endPoint: 'localhost',
+    port: 9000,
+    useSSL: false,
+    accessKey: 'Hanane',
+    secretKey: 'Hanane987'
+});
+
+exports.getProductsByVendor = async (req, res) => {
+    const artisan_id = req.query.artisan_id;
+    console.log("Received artisan_id:", artisan_id); // Debug log
+    try {
+      if (!artisan_id) {
+        return res.status(400).json({ message: "artisan_id is required" });
+      }
+      const products = await Product.find({ artisan_id: artisan_id });
+      console.log("Filtered products:", products); // Debug log
+      res.json(products);
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      res.status(500).json({ error: 'Error fetching products', details: error.message });
+    }
+  };
 
 
 const categories = [
@@ -8,12 +34,10 @@ const categories = [
     { id: '60b8d8f9e3c1f8c1d4e0e1a4', name: 'Category 4' },
 ];
 
-
 exports.getProducts = async (req, res) => {
     const { search, category, sort, inStock } = req.query;
     let query = {};
 
-   
     if (search) {
         query.$or = [
             { nom: { $regex: search, $options: 'i' } }, 
@@ -48,10 +72,19 @@ exports.getProducts = async (req, res) => {
 };
 
 exports.createProduct = async (req, res) => {
-    console.log('Files uploaded:', req.files);
     try {
-        const { nom, description, prix, quantite_stock, artisan_id, etat } = req.body;
-        const images = req.files.map(file => `/images/${file.filename}`); 
+        const { nom, description, prix, quantite_stock, artisan_id, categorie_id, etat } = req.body;
+        const images = [];
+
+        // Upload each image to MinIO
+        if (req.files) {
+            for (const file of req.files) {
+                const fileName = Date.now() + '-' + file.originalname;
+                // Use fPutObject with a buffer
+                await minioClient.putObject('your-bucket-name', fileName, file.buffer, file.size);
+                images.push(`http://YOUR_MINIO_ENDPOINT:9000/your-bucket-name/${fileName}`);
+            }
+        }
 
         const newProduct = new Product({
             nom,
@@ -59,26 +92,34 @@ exports.createProduct = async (req, res) => {
             prix,
             quantite_stock,
             artisan_id,
+            categorie_id,
+            images,
             etat,
-            images, 
         });
 
         await newProduct.save();
-        res.status(201).json(newProduct);
+        res.status(201).json({ message: "Product created successfully", product: newProduct });
     } catch (error) {
-        console.error('Error creating product:', error);
-        res.status(500).json({ message: 'Error creating product' });
+        console.error("Error creating product:", error);
+        res.status(500).json({ message: "Error creating product" });
     }
 };
 
-
 exports.updateProduct = async (req, res) => {
-    console.log('Files uploaded:', req.files); 
-
     try {
         const { id } = req.params;
         const { nom, description, prix, quantite_stock, artisan_id, etat } = req.body;
-        const images = req.files ? req.files.map(file => `/images/${file.filename}`) : []; 
+        const images = [];
+
+        // Upload each image to MinIO
+        if (req.files) {
+            for (const file of req.files) {
+                const fileName = Date.now() + '-' + file.originalname;
+                // Use fPutObject with a buffer
+                await minioClient.putObject('your-bucket-name', fileName, file.buffer, file.size);
+                images.push(`http://YOUR_MINIO_ENDPOINT:9000/your-bucket-name/${fileName}`);
+            }
+        }
 
         const updatedProduct = await Product.findByIdAndUpdate(id, {
             nom,
@@ -111,7 +152,6 @@ exports.deleteProduct = async (req, res) => {
 };
 
 exports.getProductById = async (req, res) => {
-    console.log('Fetching product with ID:', req.params.id);
     try {
         const product = await Product.findById(req.params.id);
         if (!product) {

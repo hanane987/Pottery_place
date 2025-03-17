@@ -2,7 +2,7 @@
 const User = require('../models/User'); 
 const Product = require('../models/Product'); 
 
-
+// Get all artisans (vendeurs)
 exports.getArtisans = async (req, res) => {
     try {
         const artisans = await User.find({ role: 'vendeur' }); 
@@ -12,6 +12,7 @@ exports.getArtisans = async (req, res) => {
     }
 };
 
+// Get statistics for users and products
 exports.getStatistics = async (req, res) => {
     try {
         const vendeurCount = await User.countDocuments({ role: 'vendeur' });
@@ -31,4 +32,35 @@ exports.getStatistics = async (req, res) => {
         console.error("Error fetching statistics:", error);
         res.status(500).json({ message: error.message });
     }
+};
+
+// Ban a user
+exports.banUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.userId, { is_banned: true }, { new: true });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// Unban a user
+exports.unbanUser = async (req, res) => {
+    try {
+        const user = await User.findByIdAndUpdate(req.params.userId, { is_banned: false }, { new: true });
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+    // backend/controllers/userController.js
+exports.getAllUsers = async (req, res) => {
+    try {
+        const users = await User.find(); // Fetch all users
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
 };

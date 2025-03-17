@@ -32,6 +32,7 @@ const Register = () => {
             setError('Error registering user');
         }
     };
+
     return (
         <div className={styles.loginContainer}>
             <div className={styles.loginForm}>
