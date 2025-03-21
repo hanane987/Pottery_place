@@ -31,8 +31,7 @@ exports.createReservation = async (req, res) => {
                     error: `Product ${product.nom} not available in requested quantity. Requested: ${quantity}, Available: ${product.quantite_stock}` 
                 });
             }
-
-            
+   
             const reservation = new Reservation({
                 productId,
                 userId,
@@ -42,7 +41,7 @@ exports.createReservation = async (req, res) => {
                 email,
                 address,
                 reservedAt: new Date(),
-                expiresAt: new Date(Date.now() + 7 * 24 * 3600000), // 7 days expiration
+                expiresAt: new Date(Date.now() + 7 * 24 * 3600000), 
             });
 
             product.quantite_stock -= quantity;
