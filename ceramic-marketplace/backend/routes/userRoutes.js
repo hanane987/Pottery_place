@@ -5,6 +5,7 @@ const { getArtisans, getStatistics, banUser, unbanUser } = require('../controlle
 
 router.get('/artisans', getArtisans);
 router.get('/statistics', getStatistics);
+
 router.put('/ban/:userId', banUser);
 router.put('/unban/:userId', unbanUser);
 

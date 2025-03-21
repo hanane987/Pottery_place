@@ -1,9 +1,8 @@
-// backend/controllers/authController.js
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 
-// Register User
+
 const registerUser = async (req, res) => {
     const { name, email, password, role } = req.body;
 
@@ -24,7 +23,10 @@ const registerUser = async (req, res) => {
     }
 };
 
-// Login User
+
+
+
+
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
 
@@ -49,8 +51,15 @@ const loginUser = async (req, res) => {
     }
 };
 
-// Export the controller functions
+
+
+const logoutUser = (req, res) => {
+    res.status(200).json({ message: 'User logged out successfully' });
+};
+
+
 module.exports = {
     registerUser,
     loginUser,
+    logoutUser, 
 };

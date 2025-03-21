@@ -1,4 +1,3 @@
-// backend/models/Product.js
 const mongoose = require('mongoose');
 
 const productSchema = new mongoose.Schema({
@@ -9,7 +8,9 @@ const productSchema = new mongoose.Schema({
     artisan_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
     images: { type: [String], default: [] }, 
     date_ajout: { type: Date, default: Date.now }, 
-    etat: { type: String, enum: ['disponible', 'épuisé'], default: 'disponible' }, 
+    etat: { type: String, enum: ['disponible', 'épuisé'], default: 'disponible' },
+    
+ 
 });
 
 const Product = mongoose.model('Product', productSchema);
