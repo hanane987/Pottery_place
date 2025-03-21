@@ -47,28 +47,39 @@ exports.getProducts = async (req, res) => {
     }
 };
 
-exports.createProduct = async (req, res) => {
-    console.log('Files uploaded:', req.files);
-    try {
-        const { nom, description, prix, quantite_stock, artisan_id, etat } = req.body;
-        const images = req.files.map(file => `/images/${file.filename}`); 
+exports.createProduct = (req, res) => {
+    upload.array('images')(req, res, async (err) => {
+        if (err) {
+            console.error('Multer error:', err);
+            return res.status(500).json({ message: "Error uploading files", details: err.message });
+        }
 
-        const newProduct = new Product({
-            nom,
-            description,
-            prix,
-            quantite_stock,
-            artisan_id,
-            etat,
-            images, 
-        });
+        try {
+            const { nom, description, prix, quantite_stock, artisan_id, etat } = req.body;
+            const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
 
-        await newProduct.save();
-        res.status(201).json(newProduct);
-    } catch (error) {
-        console.error('Error creating product:', error);
-        res.status(500).json({ message: 'Error creating product' });
-    }
+            // Validate artisan_id
+            if (!artisan_id) {
+                return res.status(400).json({ message: "artisan_id is required" });
+            }
+
+            const newProduct = new Product({
+                nom,
+                description,
+                prix,
+                quantite_stock,
+                artisan_id,
+                images,
+                etat,
+            });
+
+            await newProduct.save();
+            res.status(201).json({ message: "Product created successfully", product: newProduct });
+        } catch (error) {
+            console.error("Error creating product:", error);
+            res.status(500).json({ message: "Error creating product", details: error.message });
+        }
+    });
 };
 
 
