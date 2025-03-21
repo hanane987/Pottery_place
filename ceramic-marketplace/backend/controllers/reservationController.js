@@ -31,3 +31,52 @@ exports.createReservation = async (req, res) => {
                     error: `Product ${product.nom} not available in requested quantity. Requested: ${quantity}, Available: ${product.quantite_stock}` 
                 });
             }
+   
+            const reservation = new Reservation({
+                productId,
+                userId,
+                vendorId: product.artisan_id || "default_vendor_id",
+                quantity,
+                name,
+                email,
+                address,
+                reservedAt: new Date(),
+                expiresAt: new Date(Date.now() + 7 * 24 * 3600000), 
+            });
+
+            product.quantite_stock -= quantity;
+            await product.save();
+
+            reservations.push(reservation);
+        }
+
+        await Promise.all(reservations.map(r => r.save()));
+        res.status(201).json({ message: 'Reservations created successfully', reservations });
+    } catch (error) {
+        console.error("Error creating reservations:", error);
+        res.status(500).json({ error: 'Error creating reservations' });
+    }
+};
+
+exports.getAllReservations = async (req, res) => {
+    try {
+        const reservations = await Reservation.find()
+            .populate('productId')
+            .populate('userId', 'nom email');
+        res.json(reservations);
+    } catch (error) {
+        res.status(500).json({ error: 'Error fetching reservations' });
+    }
+};
+
+exports.getOrdersByVendor = async (req, res) => {
+    const vendorId = req.params.vendorId;
+    try {
+        const orders = await Reservation.find({ vendorId })
+            .populate('productId')
+            .populate('userId', 'nom email');
+        res.json(orders);
+    } catch (error) {
+        res.status(500).json({ message: 'Error fetching orders', error });
+    }
+};
