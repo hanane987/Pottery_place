@@ -1,0 +1,257 @@
+/* src/styles/Header.css */
+.pottery-header {
+    background-color: #1a1a1a;
+    padding: 1.5rem 0;
+    color: #fff;
+  }
+  
+  .pottery-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+  
+  .pottery-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .pottery-logo .logo-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+  
+  .logo-icon {
+    margin-right: 0.75rem;
+  }
+  
+  .pottery-nav-links {
+    display: flex;
+    gap: 2.5rem;
+  }
+  
+  .nav-link {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+  }
+  
+  .nav-link:hover {
+    color: #c19a6b;
+  }
+  
+  .pottery-nav-actions {
+    display: flex;
+    gap: 1.5rem;
+    position: relative;
+  }
+  
+  /* Adjusted styles for icon buttons in the header */
+  .pottery-nav-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-left: 90px;
+    position: relative;
+    width: 119px;
+    height: 45px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  .action-icon {
+    color: #fff;
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s;
+  }
+  
+  .pottery-nav-actions button:hover .action-icon {
+    transform: scale(1.2);
+  }
+  
+  .cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background-color: #ff4d4d;
+    color: #fff;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  
+  /* Classy Cart Popup Styles */
+  .elegant-cart {
+    position: absolute;
+    top: 120%;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #d9d9d9;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    width: 360px;
+    z-index: 1000;
+    font-family: 'Playfair Display', serif;
+  }
+  
+  .cart-popup-content {
+    padding: 1.5rem;
+  }
+  
+  .cart-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  
+  .cart-header h3 {
+    margin: 0;
+    font-size: 1.25rem;
+    color: #1a1a1a;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+  }
+  
+  .close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #888;
+    transition: color 0.3s ease;
+  }
+  
+  .close-btn:hover {
+    color: #c19a6b;
+  }
+  
+  .cart-items {
+    max-height: 300px;
+    overflow-y: auto;
+  }
+  
+  .empty-cart {
+    text-align: center;
+    padding: 2rem 0;
+    color: #777;
+  }
+  
+  .empty-cart p {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-style: italic;
+  }
+  
+  .cart-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e8e8e8;
+  }
+  
+  .item-info h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+  
+  .item-details {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.25rem;
+    font-size: 0.9rem;
+  }
+  
+  .item-quantity {
+    color: #666;
+  }
+  
+  .item-price {
+    color: #c19a6b;
+    font-weight: 700;
+  }
+  
+  .remove-btn {
+    background: none;
+    border: none;
+    font-size: 1.25rem;
+    cursor: pointer;
+    color: #aaa;
+    transition: color 0.3s ease;
+  }
+  
+  .remove-btn:hover {
+    color: #ff4d4d;
+  }
+  
+  .cart-footer {
+    padding-top: 1rem;
+    border-top: 1px solid #e8e8e8;
+    margin-top: 1rem;
+  }
+  
+  .cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1rem;
+    color: #1a1a1a;
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+  
+  .cart-total span:last-child {
+    color: #c19a6b;
+    font-weight: 700;
+  }
+  
+  .elegant-order-btn {
+    display: block !important;
+    width: 150px; /* Smaller width */
+    height: 40px; /* Smaller height */
+    padding: 0.25rem; /* Reduced padding to fit smaller size */
+    background-color: #8b4513 !important; /* Brown color (saddlebrown) */
+    color: #ffffff !important; /* White text */
+    border: 1px solid #6b3a0e !important; /* Subtle darker brown border */
+    border-radius: 0 !important; /* Force rectangular shape */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    cursor: pointer;
+    font-size: 1rem; /* Smaller text */
+    font-weight: 700;
+    letter-spacing: 1.5px; /* Slightly more spacing for elegance */
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 40px; /* Center text vertically with new height */
+    transition: background-color 0.3s ease;
+    margin: 0 auto; /* Center the button in the cart footer */
+  }
+  
+  .elegant-order-btn:disabled {
+    width: 150px;
+    height: 40px;
+    background-color: #d9d9d9 !important;
+    color: #888 !important;
+    border: 1px solid #b0b0b0 !important; /* Lighter border for disabled state */
+    border-radius: 0 !important;
+    box-shadow: none; /* Remove shadow when disabled */
+    cursor: not-allowed;
+  }
