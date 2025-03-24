@@ -1,11 +1,9 @@
+// pages/Contact.jsx
 "use client"
 
 import { useState, useEffect } from "react"
 import {
   ChevronRight,
-  Search,
-  Heart,
-  ShoppingCart,
   MapPin,
   Phone,
   Clock,
@@ -17,64 +15,13 @@ import {
 import { useNavigate } from "react-router-dom"
 import { toast } from "react-toastify"
 import { jwtDecode } from "jwt-decode"
-import "../../styles/Contact.css"
+import Header from "../../components/Header"
 import Footer from "../../components/Footer"
+import "../../styles/Contact.css"
 
 const Contact = () => {
   const navigate = useNavigate()
   const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem("cart")) || [])
-  const [isCartPopupVisible, setIsCartPopupVisible] = useState(false)
-  const [userId, setUserId] = useState(null)
-
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (token) {
-      try {
-        const decoded = jwtDecode(token)
-        setUserId(decoded.userId)
-      } catch (error) {
-        console.error("Error decoding token:", error)
-      }
-    }
-  }, [])
-
-  useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cart))
-  }, [cart])
-
-  const handleRemoveFromCart = (productId) => {
-    setCart(cart.filter((item) => item.productId !== productId))
-    toast.info("Product removed from cart")
-  }
-
-  const handleReserve = async () => {
-    if (!userId) {
-      toast.error("Please log in to reserve")
-      return
-    }
-    try {
-      const response = await fetch("http://localhost:5000/api/reserve", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ userId, items: cart }),
-      })
-      if (!response.ok) throw new Error("Failed to reserve products")
-      const data = await response.json()
-      toast.success(data.message)
-      setCart([])
-      localStorage.removeItem("cart")
-      setIsCartPopupVisible(false)
-      navigate("/reserve")
-    } catch (error) {
-      toast.error(error.message)
-    }
-  }
-
-  const formatPrice = (price) => (price === undefined ? "N/A" : `$${Number(price).toFixed(2)}`)
-
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -116,55 +63,7 @@ const Contact = () => {
 
   return (
     <div className="pottery-shop">
-      {/* Header with Navigation - Same as About page */}
-      <header className="pottery-header">
-        <div className="pottery-container">
-          <nav className="pottery-nav">
-            <div className="pottery-logo">
-              <a href="/" className="logo-link">
-                <div className="logo-icon">
-                  <span className="pottery-wheel"></span>
-                </div>
-                <span className="logo-text">Artisan Pottery</span>
-              </a>
-            </div>
-            <div className="pottery-nav-links">
-              <a href="/" className="nav-link">
-                Home
-              </a>
-              <a href="/shop" className="nav-link">
-                Shop
-              </a>
-              <a href="/about" className="nav-link">
-                About
-              </a>
-              <a href="/contact" className="nav-link active">
-                Contact
-              </a>
-            </div>
-            <div className="pottery-nav-actions">
-              <button aria-label="Search">
-                <Search className="action-icon" />
-              </button>
-              <button aria-label="Favorites">
-                <Heart className="action-icon" />
-              </button>
-              <button aria-label="Cart" onClick={() => setIsCartPopupVisible(true)}>
-                <ShoppingCart className="action-icon" />
-                <span className="cart-count">{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
-              </button>
-              {isCartPopupVisible && (
-                <CartPopup
-                  items={cart}
-                  onClose={() => setIsCartPopupVisible(false)}
-                  onReserve={handleReserve}
-                  onRemove={handleRemoveFromCart}
-                />
-              )}
-            </div>
-          </nav>
-        </div>
-      </header>
+      <Header cart={cart} setCart={setCart} />
 
       <main className="pottery-main contact-page">
         {/* Hero Section */}
@@ -361,55 +260,4 @@ const Contact = () => {
   )
 }
 
-// Cart Popup Component
-const CartPopup = ({ items, onClose, onReserve, onRemove }) => {
-  const formatPrice = (price) => (price === undefined ? "N/A" : `$${Number(price).toFixed(2)}`)
-
-  return (
-    <div className="cart-popup">
-      <div className="cart-popup-content">
-        <div className="cart-header">
-          <h3>Your Cart</h3>
-          <button className="close-btn" onClick={onClose}>
-            ×
-          </button>
-        </div>
-        <div className="cart-items">
-          {items.length === 0 ? (
-            <div className="empty-cart">
-              <ShoppingCart size={48} />
-              <p>Your cart is empty</p>
-            </div>
-          ) : (
-            items.map((item) => (
-              <div key={item.productId} className="cart-item">
-                <div className="item-info">
-                  <h4>{item.name}</h4>
-                  <div className="item-details">
-                    <span className="item-quantity">Qty: {item.quantity}</span>
-                    <span className="item-price">{formatPrice(item.price)}</span>
-                  </div>
-                </div>
-                <button className="remove-btn" onClick={() => onRemove(item.productId)}>
-                  ×
-                </button>
-              </div>
-            ))
-          )}
-        </div>
-        <div className="cart-footer">
-          <div className="cart-total">
-            <span>Total:</span>
-            <span>{formatPrice(items.reduce((sum, item) => sum + item.price * item.quantity, 0))}</span>
-          </div>
-          <button className="reserve-btn" onClick={onReserve} disabled={items.length === 0}>
-            Reserve Items
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 export default Contact
-

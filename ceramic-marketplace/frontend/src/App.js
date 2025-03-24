@@ -6,7 +6,6 @@ import AdminDashboard from './pages/admin/AdminDashboard';
 import ManageProducts from './pages/admin/ManageProducts'; 
 import ManageUsers from './pages/admin/ManageUsers'; 
 import LandingPage from './pages/user/AcheteurDashboard'; 
-// import ProductPage from './product/ProductPage'; 
 import Main from './pages/user/FurniroPage';
 import Index from './pages/user/Shop';
 import Home from './pages/user/Home';

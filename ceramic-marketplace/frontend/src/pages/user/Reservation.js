@@ -1,12 +1,14 @@
+// pages/Reservation.jsx
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import { jwtDecode } from "jwt-decode"
-import { ShoppingCart, ArrowLeft, Package, Search, Heart } from "lucide-react"
-import "../../styles/Reservation.css"
+import { ShoppingCart, ArrowLeft, Package } from "lucide-react"
+import Header from "../../components/Header"
 import Footer from "../../components/Footer"
+import "../../styles/Reservation.css"
 
 const Reservation = () => {
   const navigate = useNavigate()
@@ -17,7 +19,6 @@ const Reservation = () => {
   const [address, setAddress] = useState("")
   const [products, setProducts] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [isCartPopupVisible, setIsCartPopupVisible] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -106,7 +107,6 @@ const Reservation = () => {
       return
     }
 
-    // Refresh stock data before submission
     await fetchProducts()
     const stockError = validateCartStock()
     if (stockError) {
@@ -162,43 +162,7 @@ const Reservation = () => {
 
   return (
     <div className="pottery-shop">
-      <header className="pottery-header">
-        <div className="pottery-container">
-          <nav className="pottery-nav">
-            <div className="pottery-logo">
-              <Link to="/" className="logo-link">
-                <div className="logo-icon">
-                  <span className="pottery-wheel"></span>
-                </div>
-                <span className="logo-text">Artisan Pottery</span>
-              </Link>
-            </div>
-            <div className="pottery-nav-links">
-              <Link to="/" className="nav-link">Home</Link>
-              <Link to="/shop" className="nav-link">Shop</Link>
-              <Link to="/about" className="nav-link">About</Link>
-              <Link to="/contact" className="nav-link">Contact</Link>
-            </div>
-            <div className="pottery-nav-actions">
-              <button aria-label="Search"><Search className="action-icon" /></button>
-              <button aria-label="Favorites"><Heart className="action-icon" /></button>
-              <button aria-label="Cart" onClick={() => setIsCartPopupVisible(true)}>
-                <ShoppingCart className="action-icon" />
-                <span className="cart-count">{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
-              </button>
-              {isCartPopupVisible && (
-                <CartPopup
-                  items={cart}
-                  onClose={() => setIsCartPopupVisible(false)}
-                  onRemove={handleRemoveFromCart}
-                  navigate={navigate}
-                  userId={userId}
-                />
-              )}
-            </div>
-          </nav>
-        </div>
-      </header>
+      <Header cart={cart} setCart={setCart} />
 
       <main className="pottery-main">
         <div className="reservation-page">
@@ -223,10 +187,28 @@ const Reservation = () => {
                   {cart.map((item) => {
                     const product = productMap[item.productId]
                     const available = product ? product.quantite_stock : 'Unknown'
+                    const imageUrl = product?.images?.[0] 
+                      ? `http://localhost:5000${product.images[0]}` 
+                      : "/placeholder.svg?height=50&width=50"
+                    
                     return (
                       <li key={item.productId} className="cart-item">
-                        <span>{item.name} (x{item.quantity}) - Available: {available}</span>
-                        <span>{formatPrice(item.price * item.quantity)}</span>
+                        <div className="cart-item-content">
+                          <img 
+                            src={imageUrl} 
+                            alt={item.name} 
+                            className="cart-item-image"
+                            onError={(e) => {
+                              e.target.src = "/placeholder.svg?height=50&width=50"
+                            }}
+                          />
+                          <div className="cart-item-details">
+                            <span className="cart-item-name">{item.name}</span>
+                            <span className="cart-item-quantity">Qty: {item.quantity}</span>
+                            <span className="cart-item-stock">Available: {available}</span>
+                            <span className="cart-item-price">{formatPrice(item.price * item.quantity)}</span>
+                          </div>
+                        </div>
                         <button 
                           className="remove-btn" 
                           onClick={() => handleRemoveFromCart(item.productId)}
@@ -291,66 +273,6 @@ const Reservation = () => {
       </main>
 
       <Footer />
-    </div>
-  )
-}
-
-const CartPopup = ({ items, onClose, onRemove, navigate, userId }) => {
-  const formatPrice = (price) => (price === undefined ? "N/A" : `$${Number(price).toFixed(2)}`)
-  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-
-  const handleReserveClick = () => {
-    if (!userId) {
-      toast.error("Please log in to reserve")
-      navigate("/login")
-      return
-    }
-    if (items.length === 0) {
-      toast.error("Your cart is empty")
-      return
-    }
-    onClose()
-    navigate("/reserve")
-  }
-
-  return (
-    <div className="cart-popup">
-      <div className="cart-popup-content">
-        <div className="cart-header">
-          <h3>Your Cart</h3>
-          <button className="close-btn" onClick={onClose}>×</button>
-        </div>
-        <div className="cart-items">
-          {items.length === 0 ? (
-            <div className="empty-cart">
-              <ShoppingCart size={48} />
-              <p>Your cart is empty</p>
-            </div>
-          ) : (
-            items.map((item) => (
-              <div key={item.productId} className="cart-item">
-                <div className="item-info">
-                  <h4>{item.name}</h4>
-                  <div className="item-details">
-                    <span className="item-quantity">Qty: {item.quantity}</span>
-                    <span className="item-price">{formatPrice(item.price * item.quantity)}</span>
-                  </div>
-                </div>
-                <button className="remove-btn" onClick={() => onRemove(item.productId)}>×</button>
-              </div>
-            ))
-          )}
-        </div>
-        <div className="cart-footer">
-          <div className="cart-total">
-            <span>Total:</span>
-            <span>{formatPrice(totalPrice)}</span>
-          </div>
-          <button className="reserve-btn" onClick={handleReserveClick} disabled={items.length === 0}>
-            Reserve Now
-          </button>
-        </div>
-      </div>
     </div>
   )
 }
