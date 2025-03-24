@@ -126,3 +126,141 @@ const DashboardPage = () => {
     }))
     .sort((a, b) => b.totalSold - a.totalSold)
     .slice(0, 4);
+    return (
+      <div className="pottery-dashboard">
+        <Sidebar
+          activeSection={activeSection}
+          setActiveSection={setActiveSection}
+          mobileMenuOpen={mobileMenuOpen}
+          setMobileMenuOpen={setMobileMenuOpen}
+        />
+        <main className="main-content">
+          <TopNav
+            searchTerm={searchTerm}
+            setSearchTerm={setSearchTerm}
+            mobileMenuOpen={mobileMenuOpen}
+            setMobileMenuOpen={setMobileMenuOpen}
+          />
+          <div className="dashboard-content">
+            <div className="dashboard-section">
+              <h2>Dashboard Overview</h2>
+              <div className="stats-cards">
+                <div className="stat-card">
+                  <div className="stat-icon revenue">
+                    <DollarSign size={24} />
+                  </div>
+                  <div className="stat-info">
+                    <h3>Total Revenue</h3>
+                    <p className="stat-value">${totalRevenue.toFixed(2)}</p>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon orders">
+                    <ShoppingBag size={24} />
+                  </div>
+                  <div className="stat-info">
+                    <h3>Total Orders</h3>
+                    <p className="stat-value">{totalOrders}</p>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon products">
+                    <Package size={24} />
+                  </div>
+                  <div className="stat-info">
+                    <h3>Products</h3>
+                    <p className="stat-value">{totalProducts}</p>
+                  </div>
+                </div>
+                <div className="stat-card">
+                  <div className="stat-icon average">
+                    <BarChart2 size={24} />
+                  </div>
+                  <div className="stat-info">
+                    <h3>Average Order</h3>
+                    <p className="stat-value">${averageOrderValue.toFixed(2)}</p>
+                  </div>
+                </div>
+              </div>
+  
+              <div className="dashboard-grid">
+                <div className="recent-orders">
+                  <div className="section-header">
+                    <h3>Recent Orders</h3>
+                  </div>
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Order ID</th>
+                        <th>Product</th>
+                        <th>Customer ID</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Reserved At</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {orders.slice(0, 5).map((order) => (
+                        <tr key={order._id}>
+                          <td>{order._id}</td>
+                          <td>{order.productId ? order.productId.nom : "Product Not Found"}</td>
+                          <td>{order.userId._id}</td>
+                          <td>{order.quantity}</td>
+                          <td>
+                            {order.productId
+                              ? `$${(order.productId.prix * order.quantity).toFixed(2)}`
+                              : "N/A"}
+                          </td>
+                          <td>{new Date(order.reservedAt).toLocaleString()}</td>
+                        </tr>
+                      ))}
+                      {orders.length === 0 && (
+                        <tr>
+                          <td colSpan="6">No recent orders</td>
+                        </tr>
+                      )}
+                    </tbody>
+                  </table>
+                </div>
+  
+                <div className="top-products">
+                  <div className="section-header">
+                    <h3>Top Products</h3>
+                    <button className="view-all-btn" onClick={() => setActiveSection("products")}>
+                      View All
+                    </button>
+                  </div>
+                  <ul className="product-list-small">
+                    {topProducts.map((product) => (
+                      <li key={product._id} className="product-item-small">
+                        <img
+                          src={
+                            product.images.length > 0
+                              ? product.images[0]
+                              : "/placeholder.svg?height=80&width=80"
+                          }
+                          alt={product.nom}
+                        />
+                        <div className="product-details-small">
+                          <h4>{product.nom}</h4>
+                          <p className="product-category">{getCategoryName(product.categorie_id)}</p>
+                          <p className="product-price">${Number(product.prix).toFixed(2)}</p>
+                          <p className="product-sales">Sold: {product.totalSold}</p>
+                        </div>
+                      </li>
+                    ))}
+                    {topProducts.length === 0 && (
+                      <li>No top products yet</li>
+                    )}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <Footer />
+        </main>
+      </div>
+    );
+  };
+  
+  export default DashboardPage;

@@ -1,12 +1,9 @@
+// pages/ProductDetail.jsx
 "use client"
 
 import { useState, useEffect } from "react"
 import { useParams, useNavigate, Link } from "react-router-dom"
-import "../../styles/product-detail.css"
 import {
-  Search,
-  ShoppingCart,
-  Heart,
   Minus,
   Plus,
   ChevronRight,
@@ -15,9 +12,13 @@ import {
   ShieldCheck,
   RefreshCw,
   Tag,
+  ShoppingCart,
 } from "lucide-react"
 import { toast } from "react-toastify"
 import { jwtDecode } from "jwt-decode"
+import Header from "../../components/Header"
+import Footer from "../../components/Footer"
+import "../../styles/product-detail.css"
 
 const ProductDetail = () => {
   const { id } = useParams()
@@ -29,7 +30,6 @@ const ProductDetail = () => {
   const [relatedProducts, setRelatedProducts] = useState([])
   const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem("cart")) || [])
   const [userId, setUserId] = useState(null)
-  const [isCartPopupVisible, setIsCartPopupVisible] = useState(false)
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -128,11 +128,6 @@ const ProductDetail = () => {
     }
   }
 
-  const handleRemoveFromCart = (productId) => {
-    setCart(cart.filter((item) => item.productId !== productId))
-    toast.info("Product removed from cart")
-  }
-
   const formatPrice = (price) => (price === undefined ? "N/A" : `$${Number(price).toFixed(2)}`)
 
   const getCategoryName = (categoryId) => {
@@ -149,55 +144,23 @@ const ProductDetail = () => {
   if (loading)
     return (
       <div className="pottery-shop">
+        <Header cart={cart} setCart={setCart} />
         <div>Loading...</div>
+        <Footer />
       </div>
     )
   if (!product)
     return (
       <div className="pottery-shop">
+        <Header cart={cart} setCart={setCart} />
         <div>Product Not Found</div>
+        <Footer />
       </div>
     )
 
   return (
     <div className="pottery-shop">
-      <header className="pottery-header">
-        <div className="pottery-container">
-          <nav className="pottery-nav">
-            <div className="pottery-logo">
-              <Link to="/" className="logo-link">
-                <div className="logo-icon">
-                  <span className="pottery-wheel"></span>
-                </div>
-                <span className="logo-text">Artisan Pottery</span>
-              </Link>
-            </div>
-            <div className="pottery-nav-links">
-              <Link to="/" className="nav-link">Home</Link>
-              <Link to="/shop" className="nav-link active">Shop</Link>
-              <Link to="/about" className="nav-link">About</Link>
-              <Link to="/contact" className="nav-link">Contact</Link>
-            </div>
-            <div className="pottery-nav-actions">
-              <button aria-label="Search"><Search className="action-icon" /></button>
-              <button aria-label="Favorites"><Heart className="action-icon" /></button>
-              <button aria-label="Cart" onClick={() => setIsCartPopupVisible(true)}>
-                <ShoppingCart className="action-icon" />
-                <span className="cart-count">{cart.reduce((sum, item) => sum + item.quantity, 0)}</span>
-              </button>
-              {isCartPopupVisible && (
-                <CartPopup
-                  items={cart}
-                  onClose={() => setIsCartPopupVisible(false)}
-                  onRemove={handleRemoveFromCart}
-                  navigate={navigate}
-                  userId={userId}
-                />
-              )}
-            </div>
-          </nav>
-        </div>
-      </header>
+      <Header cart={cart} setCart={setCart} />
 
       <main className="pottery-main">
         <div className="pottery-container">
@@ -226,7 +189,7 @@ const ProductDetail = () => {
                   <ChevronLeft size={24} />
                 </button>
                 <img
-                  src={product.images[activeImage] || "/placeholder.svg?height=600&width=600"}
+                  src={product.images[activeImage] ? `http://localhost:5000${product.images[activeImage]}` : "/placeholder.svg?height=600&width=600"}
                   alt={product.nom}
                   className="main-image"
                 />
@@ -245,7 +208,10 @@ const ProductDetail = () => {
                     className={`thumbnail ${activeImage === index ? "active" : ""}`}
                     onClick={() => setActiveImage(index)}
                   >
-                    <img src={image || "/placeholder.svg"} alt={`${product.nom} - View ${index + 1}`} />
+                    <img 
+                      src={image ? `http://localhost:5000${image}` : "/placeholder.svg"} 
+                      alt={`${product.nom} - View ${index + 1}`} 
+                    />
                   </div>
                 ))}
               </div>
@@ -321,7 +287,10 @@ const ProductDetail = () => {
             <div className="related-products-grid">
               {relatedProducts.map((product) => (
                 <article key={product._id} className="product-card" onClick={() => navigate(`/product/${product._id}`)}>
-                  <img src={product.images?.[0] || "/placeholder.svg?height=300&width=300"} alt={product.nom} />
+                  <img 
+                    src={product.images?.[0] ? `http://localhost:5000${product.images[0]}` : "/placeholder.svg?height=300&width=300"} 
+                    alt={product.nom} 
+                  />
                   <div className="product-details">
                     <h3>{product.nom}</h3>
                     <div>{formatPrice(product.prix)}</div>
@@ -333,113 +302,7 @@ const ProductDetail = () => {
         </div>
       </main>
 
-      <footer className="pottery-footer">
-        <div className="pottery-container">
-          <div className="footer-content">
-            <div className="footer-brand">
-              <h2 className="footer-logo">Artisan Pottery</h2>
-              <p className="footer-tagline">Handcrafted with passion since 1985</p>
-              <address className="footer-address">400 University Drive Suite 200, Coral Gables, FL 33134 USA</address>
-            </div>
-            <div className="footer-links-container">
-              <div className="footer-links">
-                <h3 className="footer-heading">Quick Links</h3>
-                <ul className="footer-nav">
-                  <li><Link to="/">Home</Link></li>
-                  <li><Link to="/shop">Shop</Link></li>
-                  <li><Link to="/about">About Us</Link></li>
-                  <li><Link to="/contact">Contact</Link></li>
-                </ul>
-              </div>
-              <div className="footer-links">
-                <h3 className="footer-heading">Help</h3>
-                <ul className="footer-nav">
-                  <li><Link to="/shipping">Shipping</Link></li>
-                  <li><Link to="/returns">Returns & Exchanges</Link></li>
-                  <li><Link to="/faq">FAQ</Link></li>
-                  <li><Link to="/privacy">Privacy Policy</Link></li>
-                </ul>
-              </div>
-            </div>
-            <div className="footer-newsletter">
-              <h3 className="footer-heading">Join Our Newsletter</h3>
-              <p className="newsletter-text">Subscribe to receive updates, access to exclusive deals, and more.</p>
-              <form className="newsletter-form">
-                <input type="email" placeholder="Your email address" className="newsletter-input" required />
-                <button type="submit" className="newsletter-button">Subscribe</button>
-              </form>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <div className="copyright">© {new Date().getFullYear()} Artisan Pottery. All rights reserved.</div>
-            <div className="social-links">
-              <a href="#" className="social-link" aria-label="Instagram"><span className="social-icon instagram"></span></a>
-              <a href="#" className="social-link" aria-label="Facebook"><span className="social-icon facebook"></span></a>
-              <a href="#" className="social-link" aria-label="Pinterest"><span className="social-icon pinterest"></span></a>
-            </div>
-          </div>
-        </div>
-      </footer>
-    </div>
-  )
-}
-
-const CartPopup = ({ items, onClose, onRemove, navigate, userId }) => {
-  const formatPrice = (price) => (price === undefined ? "N/A" : `$${Number(price).toFixed(2)}`)
-  const totalPrice = items.reduce((sum, item) => sum + item.price * item.quantity, 0)
-
-  const handleReserveClick = () => {
-    if (!userId) {
-      toast.error("Please log in to reserve")
-      navigate("/login")
-      return
-    }
-    if (items.length === 0) {
-      toast.error("Your cart is empty")
-      return
-    }
-    onClose()
-    navigate("/reserve")
-  }
-
-  return (
-    <div className="cart-popup">
-      <div className="cart-popup-content">
-        <div className="cart-header">
-          <h3>Your Cart</h3>
-          <button className="close-btn" onClick={onClose}>×</button>
-        </div>
-        <div className="cart-items">
-          {items.length === 0 ? (
-            <div className="empty-cart">
-              <ShoppingCart size={48} />
-              <p>Your cart is empty</p>
-            </div>
-          ) : (
-            items.map((item) => (
-              <div key={item.productId} className="cart-item">
-                <div className="item-info">
-                  <h4>{item.name}</h4>
-                  <div className="item-details">
-                    <span className="item-quantity">Qty: {item.quantity}</span>
-                    <span className="item-price">{formatPrice(item.price * item.quantity)}</span>
-                  </div>
-                </div>
-                <button className="remove-btn" onClick={() => onRemove(item.productId)}>×</button>
-              </div>
-            ))
-          )}
-        </div>
-        <div className="cart-footer">
-          <div className="cart-total">
-            <span>Total:</span>
-            <span>{formatPrice(totalPrice)}</span>
-          </div>
-          <button className="reserve-btn" onClick={handleReserveClick} disabled={items.length === 0}>
-            Reserve Now
-          </button>
-        </div>
-      </div>
+      <Footer />
     </div>
   )
 }
