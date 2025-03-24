@@ -26,6 +26,4 @@ yarn-error.log*
 
 # Ignore large files (specific .exe files)
 ceramic-marketplace/backend/minio.exe
-ceramic-marketplace/backend/node_modules/.cache/
-ceramic-marketplace/backend/node_modules/.cache/mongodb-memory-server/mongod-x64-win32-6.0.14.exe
 *.exe
