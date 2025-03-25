@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { jwtDecode } from 'jwt-decode';
 import Sidebar from "../../components/common/Sidebar";
@@ -53,24 +53,7 @@ const ProductsPage = () => {
       console.log("No token found in localStorage");
     }
   }, []);
-
-  useEffect(() => {
-    if (vendorId) {
-      fetchProducts();
-      fetchArtisans();
-    }
-  }, [vendorId]);
-
-  useEffect(() => {
-    if (vendorId) {
-      setProductFormData((prevData) => ({
-        ...prevData,
-        artisan_id: vendorId,
-      }));
-    }
-  }, [vendorId]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       if (!vendorId) {
@@ -90,7 +73,25 @@ const ProductsPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [vendorId]);
+
+  useEffect(() => {
+    if (vendorId) {
+      fetchProducts();
+      fetchArtisans();
+    }
+  }, [vendorId, fetchProducts]); 
+
+  useEffect(() => {
+    if (vendorId) {
+      setProductFormData((prevData) => ({
+        ...prevData,
+        artisan_id: vendorId,
+      }));
+    }
+  }, [vendorId]);
+
+ 
 
   const fetchArtisans = async () => {
     try {
@@ -140,22 +141,21 @@ const ProductsPage = () => {
           formData.append(key, productFormData[key]);
         }
       });
-
-      let response;
+  
       if (isEditMode) {
-        response = await axios.put(
+        await axios.put(
           `http://localhost:5000/api/products/${productFormData.id}`,
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
       } else {
-        response = await axios.post(
+        await axios.post(
           "http://localhost:5000/api/products",
           formData,
           { headers: { "Content-Type": "multipart/form-data" } }
         );
       }
-
+  
       resetProductForm();
       setIsAddProductModalOpen(false);
       fetchProducts();
