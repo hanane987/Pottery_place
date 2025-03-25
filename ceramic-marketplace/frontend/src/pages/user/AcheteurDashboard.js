@@ -489,16 +489,16 @@ const PotteryLanding = () => {
               <p className="subscribe-text">Follow us on social media for inspiration and updates.</p>
 
               <div className="social-links-large">
-                <a href="#" className="social-link-large">
-                  Instagram
-                </a>
-                <a href="#" className="social-link-large">
-                  Facebook
-                </a>
-                <a href="#" className="social-link-large">
-                  Pinterest
-                </a>
-              </div>
+  <a href="https://instagram.com" className="social-link-large">
+    Instagram
+  </a>
+  <a href="https://facebook.com" className="social-link-large">
+    Facebook
+  </a>
+  <a href="https://pinterest.com" className="social-link-large">
+    Pinterest
+  </a>
+</div>
             </div>
           </div>
 
