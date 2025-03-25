@@ -56,16 +56,16 @@ const Footer = () => {
             © {new Date().getFullYear()} Artisan Pottery. All rights reserved.
           </div>
           <div className="social-links">
-            <a href="#" className="social-link" aria-label="Instagram">
-              <span className="social-icon instagram"></span>
-            </a>
-            <a href="#" className="social-link" aria-label="Facebook">
-              <span className="social-icon facebook"></span>
-            </a>
-            <a href="#" className="social-link" aria-label="Pinterest">
-              <span className="social-icon pinterest"></span>
-            </a>
-          </div>
+  <a href="https://instagram.com/yourprofile" className="social-link" aria-label="Instagram">
+    <span className="social-icon instagram"></span>
+  </a>
+  <a href="https://facebook.com/yourprofile" className="social-link" aria-label="Facebook">
+    <span className="social-icon facebook"></span>
+  </a>
+  <a href="https://pinterest.com/yourprofile" className="social-link" aria-label="Pinterest">
+    <span className="social-icon pinterest"></span>
+  </a>
+</div>
         </div>
       </div>
     </footer>
