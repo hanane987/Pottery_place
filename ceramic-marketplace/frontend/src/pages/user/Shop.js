@@ -4,8 +4,7 @@
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { toast } from 'react-toastify'
-import { jwtDecode } from 'jwt-decode'
-import { Search, ShoppingCart, Heart, ChevronRight, Star, X } from 'lucide-react'
+import { Search, ShoppingCart, Star } from 'lucide-react'
 import Header from "../../components/Header"
 import Footer from "../../components/Footer"
 import "../../styles/Shop.css"
