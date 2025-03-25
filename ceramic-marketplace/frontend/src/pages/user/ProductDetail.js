@@ -78,12 +78,14 @@ const ProductDetail = () => {
         setRelatedProducts(data.filter((item) => item._id !== id).slice(0, 4))
       } catch (error) {
         console.error("Error fetching related products:", error)
+        console.log("User ID:", userId); 
+
         setRelatedProducts([])
       }
     }
 
     if (id) fetchProduct()
-  }, [id])
+  }, [id, userId])
 
   const handleQuantityChange = (amount) => {
     const newQuantity = quantity + amount
