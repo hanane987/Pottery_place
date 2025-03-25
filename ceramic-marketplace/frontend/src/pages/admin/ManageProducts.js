@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "../../styles/ManageProducts.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import adminStyles from "../../styles/AdminDashboard.module.css";
 import AdminSidebar from "../../components/common/AdminSidebar";
 
 const ManageProducts = () => {
