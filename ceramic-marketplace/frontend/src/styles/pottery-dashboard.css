@@ -796,6 +796,9 @@
     font-size: 0.8rem;
     color: var(--text-secondary);
   }
+<<<<<<< HEAD
+  
+=======
   .product-thumbnail {
   width: 80px;
   height: 80px;
@@ -819,6 +822,7 @@
 .products-table td {
   vertical-align: middle;
 }
+>>>>>>> POT-23-en-tant-quacheteur-je-veux-pouvoir-de-visualiser-un-interface-user-afin-de-trouver-facilement-ce-que-je-cherche
   /* Pie Chart */
   .pie-chart {
     width: 180px;

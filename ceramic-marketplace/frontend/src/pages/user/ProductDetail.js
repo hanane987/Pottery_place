@@ -21,6 +21,7 @@ import Footer from "../../components/Footer"
 import "../../styles/product-detail.css"
 
 const ProductDetail = () => {
+  let userId ;
   const { id } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState(null)
@@ -29,22 +30,22 @@ const ProductDetail = () => {
   const [activeImage, setActiveImage] = useState(0)
   const [relatedProducts, setRelatedProducts] = useState([])
   const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem("cart")) || [])
-  const [userId, setUserId] = useState(null)
+  const [ setUserId] = useState(null)
 
   useEffect(() => {
-    const token = localStorage.getItem("token")
+    const token = localStorage.getItem("token");
     if (token) {
       try {
-        const decoded = jwtDecode(token)
-        setUserId(decoded.id)
+        const decoded = jwtDecode(token);
+        setUserId(decoded.id);
       } catch (error) {
-        console.error("Error decoding token:", error)
-        toast.error("Invalid token. Please log in again.")
-        navigate("/login")
+        console.error("Error decoding token:", error);
+        toast.error("Invalid token. Please log in again.");
+        navigate("/login");
       }
     }
-  }, [navigate])
-
+  }, [navigate, setUserId]); 
+  
   useEffect(() => {
     localStorage.setItem("cart", JSON.stringify(cart))
   }, [cart])

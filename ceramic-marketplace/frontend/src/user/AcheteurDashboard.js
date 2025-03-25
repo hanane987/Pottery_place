@@ -1,368 +1,521 @@
-import { useState, useEffect } from "react";
-import "../styles/Shop.css";
-import { Search, Tag, ShoppingCart, Heart, GitCompare, PlusCircle } from "lucide-react"; 
+"use client"
 
-const Index = () => {
-  const [products, setProducts] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [category, setCategory] = useState("");
-  const [sortOrder, setSortOrder] = useState("asc");
-  const [inStock, setInStock] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(3);
+import { useState } from "react"
+import "../styles/pottery-shop.css"
+import { Search, ShoppingCart, Heart, ArrowRight, Star, Instagram, Mail, ChevronRight, Play } from "lucide-react"
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/products?search=${searchTerm}&category=${category}&sort=${sortOrder}&inStock=${inStock}`
-        );
-        
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const data = await response.json();
-        setProducts(data);
-        
-        const calculatedTotalPages = Math.ceil(data.length / 8);
-        setTotalPages(calculatedTotalPages > 0 ? calculatedTotalPages : 1);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-        setProducts([]);
-      }
-    };
+const PotteryLanding = () => {
+  const [email, setEmail] = useState("")
 
-    fetchProducts();
-  }, [searchTerm, category, sortOrder, inStock]);
-
-  const handleProductClick = (id) => {
-    console.log(`Navigate to product details: /product/${id}`);
-  };
-
-  const formatPrice = (price) => {
-    if (price === undefined) return "N/A"; 
-    return `Rp ${price.toLocaleString()}`;
-  };
+  const handleSubscribe = (e) => {
+    e.preventDefault()
+    console.log("Subscribed with email:", email)
+    setEmail("")
+    // Here you would typically call an API to handle the subscription
+  }
 
   return (
-    <div className="shop-page">
-      <header className="header">
-        <nav className="nav-container">
-          <div className="logo-container">
-            <a href="/" className="logo-link">
-              <img
-                src="https://cdn.example.com/logo.png"
-                alt="Marketplace Logo"
-                className="logo-image"
-              />
-              <span className="logo-text">Marketplace</span>
-            </a>
-          </div>
-          <div className="nav-links">
-            <a href="/" className="nav-link active">Home</a>
-            <a href="/shop" className="nav-link">Shop</a>
-            <a href="/about" className="nav-link">About</a>
-            <a href="/contact" className="nav-link">Contact</a>
-          </div>
-          <div className="nav-icons">
-            <button aria-label="Account" className="icon-button">
-              <img
-                src="https://cdn.example.com/account-icon.png"
-                alt=""
-                className="nav-icon"
-              />
-            </button>
-            <button aria-label="Search" className="icon-button">
-              <Search className="nav-icon" />
-            </button>
-            <button aria-label="Favorites" className="icon-button">
-              <Heart className="nav-icon" />
-            </button>
-            <button aria-label="Cart" className="icon-button">
-              <ShoppingCart className="nav-icon" />
-            </button>
-          </div>
-        </nav>
+    <div className="pottery-shop landing-page">
+      {/* Header */}
+      <header className="pottery-header">
+        <div className="container">
+          <nav className="main-nav">
+            <div className="logo">
+              <a href="/" className="logo-link">
+                <div className="logo-symbol">
+                  <span className="logo-circle"></span>
+                </div>
+                <span className="logo-text">Earthen Crafts</span>
+              </a>
+            </div>
+
+            <div className="nav-menu">
+              <a href="/" className="menu-link active">
+                Home
+              </a>
+              <a href="/shop" className="menu-link">
+                Shop
+              </a>
+              <a href="/collections" className="menu-link">
+                Collections
+              </a>
+              <a href="/about" className="menu-link">
+                Our Story
+              </a>
+              <a href="/contact" className="menu-link">
+                Contact
+              </a>
+            </div>
+
+            <div className="nav-controls">
+              <button aria-label="Search" className="control-btn">
+                <Search className="control-icon" />
+              </button>
+              <button aria-label="Favorites" className="control-btn">
+                <Heart className="control-icon" />
+              </button>
+              <button aria-label="Cart" className="control-btn cart">
+                <ShoppingCart className="control-icon" />
+                <span className="cart-badge">0</span>
+              </button>
+            </div>
+          </nav>
+        </div>
       </header>
 
-      <main>
-        <section className="shop-hero">
-          <img
-            src="https://cdn.example.com/shop-banner.png"
-            alt="Marketplace Banner"
-            className="hero-image"
-          />
-          <div className="hero-content">
-            <h1 className="hero-title">Marketplace</h1>
-            <div className="breadcrumb">
-              <span className="breadcrumb-home">Home</span>
-              <img
-                src="https://cdn.example.com/breadcrumb-arrow.png"
-                alt=""
-                className="breadcrumb-arrow"
-              />
-              <span className="breadcrumb-current">Shop</span>
+      <main className="main-content">
+        {/* Hero Section */}
+        <section className="landing-hero">
+          <div className="hero-wrapper">
+            <img src="/placeholder.svg?height=800&width=1600" alt="Luxury Handcrafted Pottery" className="hero-img" />
+            <div className="hero-gradient"></div>
+          </div>
+
+          <div className="container">
+            <div className="landing-hero-content">
+              <h1 className="landing-hero-title">
+                Artisan Pottery
+                <br />
+                Handcrafted Excellence
+              </h1>
+              <p className="landing-hero-subtitle">Timeless pieces that blend tradition with contemporary design</p>
+              <div className="hero-buttons">
+                <a href="/shop" className="primary-btn">
+                  Explore Collection
+                  <ArrowRight size={16} />
+                </a>
+                <a href="/about" className="secondary-btn">
+                  Our Story
+                </a>
+              </div>
             </div>
           </div>
         </section>
 
-        <section className="filter-bar">
-          <div className="filter-left">
-            <div className="search-input">
-              <input 
-                type="text" 
-                placeholder="Search by name or description" 
-                value={searchTerm} 
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="filter-search" 
-              />
-              <Search size={20} className="search-icon" />
+        {/* Featured Categories */}
+        <section className="featured-categories">
+          <div className="container">
+            <div className="section-intro">
+              <h2 className="section-title">Curated Collections</h2>
+              <p className="section-subtitle">Discover our handpicked selections of artisanal pottery</p>
             </div>
-            <div className="view-options">
-              <label className="stock-filter">
-                <input 
-                  type="checkbox" 
-                  checked={inStock} 
-                  onChange={() => setInStock(!inStock)} 
-                />
-                In Stock Only
-              </label>
+
+            <div className="categories-grid">
+              <div className="category-card">
+                <div className="category-image-container">
+                  <img src="/placeholder.svg?height=500&width=400" alt="Vases Collection" className="category-image" />
+                  <div className="category-overlay"></div>
+                </div>
+                <h3 className="category-title">Vases</h3>
+                <a href="/shop/vases" className="category-link">
+                  Explore <ChevronRight size={16} />
+                </a>
+              </div>
+
+              <div className="category-card">
+                <div className="category-image-container">
+                  <img
+                    src="/placeholder.svg?height=500&width=400"
+                    alt="Tableware Collection"
+                    className="category-image"
+                  />
+                  <div className="category-overlay"></div>
+                </div>
+                <h3 className="category-title">Tableware</h3>
+                <a href="/shop/tableware" className="category-link">
+                  Explore <ChevronRight size={16} />
+                </a>
+              </div>
+
+              <div className="category-card">
+                <div className="category-image-container">
+                  <img src="/placeholder.svg?height=500&width=400" alt="Decorative Pieces" className="category-image" />
+                  <div className="category-overlay"></div>
+                </div>
+                <h3 className="category-title">Decorative</h3>
+                <a href="/shop/decorative" className="category-link">
+                  Explore <ChevronRight size={16} />
+                </a>
+              </div>
             </div>
-          </div>
-          <div className="filter-right">
-            <label className="filter-label">Category</label>
-            <select 
-              className="filter-select category-select" 
-              value={category} 
-              onChange={(e) => setCategory(e.target.value)}
-            >
-              <option value="">All Categories</option>
-              <option value="Category 1">Category 1</option>
-              <option value="Category 2">Category 2</option>
-              <option value="Category 3">Category 3</option>
-              <option value="Category 4">Category 4</option>
-            </select>
-            <label className="filter-label">Sort by</label>
-            <select 
-              className="filter-select sort-select"
-              value={sortOrder} 
-              onChange={(e) => setSortOrder(e.target.value)}
-            >
-              <option value="asc">Price: Low to High</option>
-              <option value="desc">Price: High to Low</option>
-            </select>
           </div>
         </section>
 
-        <section className="product-grid-section">
-          <div className="product-grid-container">
-            <h2 className="featured-title">Featured Products</h2>
-            <div className="product-grid">
-              {products.length > 0 ? (
-                products.map((product) => (
-                  <article 
-                    key={product._id} 
-                    className="product-card"
-                    onClick={() => handleProductClick(product._id)}
-                  >
-                    <div className="product-image-container">
-                      <img 
-                        src={Array.isArray(product.images) && product.images.length > 0 
-                          ? `http://localhost:5000${product.images[0]}`
-                          : 'https://cdn.example.com/random-pottery-image.png'} 
-                        alt={product.nom} 
-                        className="product-image" 
-                      />
-                      {product.oldPrice && (
-                        <div className="product-badge discount-red">
-                          {Math.round((product.oldPrice - product.price) / product.oldPrice * 100)}%
-                        </div>
-                      )}
-                      {!product.inStock && (
-                        <div className="product-badge out-of-stock">
-                          Out of Stock
-                        </div>
-                      )}
-                      <div className="product-overlay">
-                        <div className="product-overlay-content">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              console.log(`Add to cart: ${product.nom}`);
-                            }}
-                            className="add-to-cart-button"
-                            disabled={!product.inStock}
-                          >
-                            Add to cart
-                          </button>
-                          <div className="product-actions">
-                            <button className="action-button">
-                              <PlusCircle className="action-icon" />
-                              <span>Add to Favorites</span>
-                            </button>
-                            <button className="action-button">
-                              <GitCompare className="action-icon" />
-                              <span>Compare</span>
-                            </button>
-                            <button className="action-button">
-                              <Heart className="action-icon" />
-                              <span>Like</span>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
+        {/* About Section */}
+        <section className="about-section">
+          <div className="container">
+            <div className="about-grid">
+              <div className="about-content">
+                <span className="content-label">Our Story</span>
+                <h2 className="about-title">Crafting Beauty Since 1985</h2>
+                <p className="about-text">
+                  At Earthen Crafts, we believe in the timeless art of pottery making. Each piece is meticulously
+                  handcrafted by our master artisans, combining traditional techniques with contemporary design
+                  sensibilities.
+                </p>
+                <p className="about-text">
+                  Our commitment to quality and sustainability ensures that every creation not only beautifies your
+                  space but also honors the earth from which it came.
+                </p>
+                <a href="/about" className="text-link">
+                  Learn more about our journey
+                  <ArrowRight size={16} />
+                </a>
+              </div>
+
+              <div className="about-image-container">
+                <img src="/placeholder.svg?height=600&width=500" alt="Artisan at work" className="about-image" />
+                <div className="video-button">
+                  <Play size={24} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Featured Products */}
+        <section className="featured-products">
+          <div className="container">
+            <div className="section-intro">
+              <h2 className="section-title">Bestselling Pieces</h2>
+              <p className="section-subtitle">Our most coveted creations, cherished in homes worldwide</p>
+            </div>
+
+            <div className="products-slider">
+              {/* Product 1 */}
+              <div className="product-slide">
+                <div className="product-image-container">
+                  <img src="/placeholder.svg?height=400&width=400" alt="Ceramic Vase" className="product-image" />
+                  <div className="product-overlay">
+                    <button className="cart-btn">Add to Cart</button>
+                    <div className="action-buttons">
+                      <button className="action-btn" title="Add to Wishlist">
+                        <Heart size={18} />
+                      </button>
+                      <button className="action-btn" title="Quick View">
+                        <Search size={18} />
+                      </button>
                     </div>
-                    <div className="product-info">
-                      <h3 className="product-name">
-                        <Tag size={16} className="product-tag-icon" /> {product.nom}
-                      </h3>
-                      <p className="product-description">
-                        {product.description.length > 50
-                          ? `${product.description.slice(0, 50)}...`
-                          : product.description}
-                      </p>
-                      <div className="product-price-container">
-                        <span className="product-price">
-                          {product.price !== undefined ? formatPrice(product.price) : "N/A"}
-                        </span>
-                        {product.oldPrice && (
-                          <span className="product-old-price">{formatPrice(product.oldPrice)}</span>
-                        )}
-                      </div>
+                  </div>
+                </div>
+                <div className="product-info">
+                  <h3 className="product-title">Handcrafted Ceramic Vase</h3>
+                  <p className="product-pricing">$120.00</p>
+                </div>
+              </div>
+
+              {/* Product 2 */}
+              <div className="product-slide">
+                <div className="product-image-container">
+                  <img src="/placeholder.svg?height=400&width=400" alt="Stoneware Bowl Set" className="product-image" />
+                  <div className="product-overlay">
+                    <button className="cart-btn">Add to Cart</button>
+                    <div className="action-buttons">
+                      <button className="action-btn" title="Add to Wishlist">
+                        <Heart size={18} />
+                      </button>
+                      <button className="action-btn" title="Quick View">
+                        <Search size={18} />
+                      </button>
                     </div>
-                  </article>
-                ))
-              ) : (
-                <p className="no-products">No products found matching your criteria.</p>
-              )}
+                  </div>
+                </div>
+                <div className="product-info">
+                  <h3 className="product-title">Stoneware Bowl Set</h3>
+                  <p className="product-pricing">$85.00</p>
+                </div>
+              </div>
+
+              {/* Product 3 */}
+              <div className="product-slide">
+                <div className="product-image-container">
+                  <img src="/placeholder.svg?height=400&width=400" alt="Decorative Plate" className="product-image" />
+                  <div className="product-overlay">
+                    <button className="cart-btn">Add to Cart</button>
+                    <div className="action-buttons">
+                      <button className="action-btn" title="Add to Wishlist">
+                        <Heart size={18} />
+                      </button>
+                      <button className="action-btn" title="Quick View">
+                        <Search size={18} />
+                      </button>
+                    </div>
+                  </div>
+                </div>
+                <div className="product-info">
+                  <h3 className="product-title">Decorative Plate</h3>
+                  <p className="product-pricing">$65.00</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="view-all-container">
+              <a href="/shop" className="primary-btn">
+                View All Products
+                <ArrowRight size={16} />
+              </a>
             </div>
           </div>
         </section>
 
-        <div className="pagination">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-            <button
-              key={page}
-              onClick={() => setCurrentPage(page)}
-              className={`page-button ${page === currentPage ? "active" : ""}`}
-            >
-              {page}
-            </button>
-          ))}
-          <button
-            onClick={() => currentPage < totalPages && setCurrentPage(currentPage + 1)}
-            className="next-button"
-            disabled={currentPage === totalPages}
-          >
-            Next
-          </button>
-        </div>
+        {/* Craftsmanship Process */}
+        <section className="process-section">
+          <div className="container">
+            <div className="section-intro">
+              <h2 className="section-title">Our Craftsmanship</h2>
+              <p className="section-subtitle">The meticulous journey from clay to masterpiece</p>
+            </div>
 
-        <section className="features-section">
-          <div className="features-container">
-            <div className="feature-item">
-              <img
-                src="https://cdn.example.com/high-quality-icon.png"
-                alt=""
-                className="feature-icon"
-              />
-              <div className="feature-content">
-                <h3 className="feature-title">High Quality</h3>
-                <p className="feature-description">handcrafted pottery</p>
+            <div className="process-steps">
+              <div className="process-step">
+                <div className="step-number">01</div>
+                <h3 className="step-title">Material Selection</h3>
+                <p className="step-description">
+                  We source the finest clays and materials, prioritizing sustainability and quality.
+                </p>
+              </div>
+
+              <div className="process-step">
+                <div className="step-number">02</div>
+                <h3 className="step-title">Wheel Throwing</h3>
+                <p className="step-description">
+                  Each piece is carefully shaped on the potter's wheel by our master artisans.
+                </p>
+              </div>
+
+              <div className="process-step">
+                <div className="step-number">03</div>
+                <h3 className="step-title">Glazing</h3>
+                <p className="step-description">
+                  Unique glazes are applied by hand, creating distinctive finishes and colors.
+                </p>
+              </div>
+
+              <div className="process-step">
+                <div className="step-number">04</div>
+                <h3 className="step-title">Firing</h3>
+                <p className="step-description">
+                  Pieces are kiln-fired at precise temperatures to ensure durability and beauty.
+                </p>
               </div>
             </div>
-            <div className="feature-item">
-              <img
-                src="https://cdn.example.com/warranty-icon.png"
-                alt=""
-                className="feature-icon"
-              />
-              <div className="feature-content">
-                <h3 className="feature-title">Warranty Protection</h3>
-                <p className="feature-description">Over 2 years</p>
+          </div>
+        </section>
+
+        {/* Testimonials */}
+        <section className="testimonials-section">
+          <div className="container">
+            <div className="section-intro">
+              <h2 className="section-title">Client Testimonials</h2>
+              <p className="section-subtitle">What our valued customers say about our creations</p>
+            </div>
+
+            <div className="testimonials-grid">
+              <div className="testimonial-card">
+                <div className="testimonial-stars">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={18} fill="#a67c52" color="#a67c52" />
+                  ))}
+                </div>
+                <p className="testimonial-text">
+                  "The craftsmanship is exceptional. Each piece tells a story and has become a cherished part of our
+                  home. Truly worth every penny."
+                </p>
+                <div className="testimonial-author">
+                  <img src="/placeholder.svg?height=60&width=60" alt="Emily Johnson" className="author-image" />
+                  <div className="author-info">
+                    <h4 className="author-name">Emily Johnson</h4>
+                    <p className="author-title">Interior Designer</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="testimonial-card">
+                <div className="testimonial-stars">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={18} fill="#a67c52" color="#a67c52" />
+                  ))}
+                </div>
+                <p className="testimonial-text">
+                  "I've collected pottery for years, and Earthen Crafts stands out for their attention to detail and
+                  unique designs. Absolutely stunning work."
+                </p>
+                <div className="testimonial-author">
+                  <img src="/placeholder.svg?height=60&width=60" alt="Michael Chen" className="author-image" />
+                  <div className="author-info">
+                    <h4 className="author-name">Michael Chen</h4>
+                    <p className="author-title">Art Collector</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="testimonial-card">
+                <div className="testimonial-stars">
+                  {[...Array(5)].map((_, i) => (
+                    <Star key={i} size={18} fill="#a67c52" color="#a67c52" />
+                  ))}
+                </div>
+                <p className="testimonial-text">
+                  "The tableware set I purchased has elevated my dining experience. The quality is impeccable, and
+                  guests always compliment the pieces."
+                </p>
+                <div className="testimonial-author">
+                  <img src="/placeholder.svg?height=60&width=60" alt="Sophia Rodriguez" className="author-image" />
+                  <div className="author-info">
+                    <h4 className="author-name">Sophia Rodriguez</h4>
+                    <p className="author-title">Chef & Restaurateur</p>
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="feature-item">
-              <img
-                src="https://cdn.example.com/free-shipping-icon.png"
-                alt=""
-                className="feature-icon"
-              />
-              <div className="feature-content">
-                <h3 className="feature-title">Free Shipping</h3>
-                <p className="feature-description">Order over 150 $</p>
-              </div>
+          </div>
+        </section>
+
+        {/* Instagram Gallery */}
+        <section className="instagram-section">
+          <div className="container">
+            <div className="section-intro">
+              <h2 className="section-title">Follow Our Journey</h2>
+              <p className="section-subtitle">
+                Join our community on Instagram{" "}
+                <a href="https://instagram.com/earthencrafts" className="instagram-handle">
+                  @earthencrafts
+                </a>
+              </p>
             </div>
-            <div className="feature-item">
-              <img
-                src="https://cdn.example.com/support-icon.png"
-                alt=""
-                className="feature-icon"
-              />
-              <div className="feature-content">
-                <h3 className="feature-title">24 / 7 Support</h3>
-                <p className="feature-description">Dedicated support</p>
+
+            <div className="instagram-grid">
+              {[...Array(6)].map((_, i) => (
+                <a href="https://instagram.com/earthencrafts" className="instagram-item" key={i}>
+                  <img
+                    src={`/placeholder.svg?height=300&width=300&text=Instagram+${i + 1}`}
+                    alt="Instagram post"
+                    className="instagram-image"
+                  />
+                  <div className="instagram-overlay">
+                    <Instagram size={24} />
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        {/* Newsletter */}
+        <section className="newsletter-section">
+          <div className="container">
+            <div className="newsletter-container">
+              <div className="newsletter-content">
+                <h2 className="newsletter-title">Join Our Community</h2>
+                <p className="newsletter-text">
+                  Subscribe to receive updates on new collections, artisan stories, and exclusive offers.
+                </p>
+                <form onSubmit={handleSubscribe} className="newsletter-form">
+                  <div className="form-group">
+                    <Mail size={20} className="input-icon" />
+                    <input
+                      type="email"
+                      placeholder="Your email address"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      required
+                      className="newsletter-input"
+                    />
+                  </div>
+                  <button type="submit" className="newsletter-button">
+                    Subscribe
+                  </button>
+                </form>
               </div>
             </div>
           </div>
         </section>
       </main>
 
+      {/* Footer */}
       <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-info">
-            <h2 className="footer-logo">Pottery.</h2>
-            <address className="footer-address">
-              400 University Drive Suite 200 Coral Gables,
-              <br />
-              FL 33134 USA
-            </address>
+        <div className="container">
+          <div className="footer-content">
+            <div className="footer-brand">
+              <h2 className="footer-logo">Earthen Crafts</h2>
+              <p className="footer-slogan">Connecting tradition with modern living</p>
+              <address className="footer-address">
+                400 University Drive Suite 200
+                <br />
+                Coral Gables, FL 33134 USA
+              </address>
+            </div>
+
+            <div className="footer-nav-container">
+              <div className="footer-nav">
+                <h3 className="footer-nav-title">Shop</h3>
+                <ul className="footer-links">
+                  <li>
+                    <a href="/shop/new">New Arrivals</a>
+                  </li>
+                  <li>
+                    <a href="/shop/bestsellers">Bestsellers</a>
+                  </li>
+                  <li>
+                    <a href="/shop/sale">Sale Items</a>
+                  </li>
+                  <li>
+                    <a href="/shop/collections">Collections</a>
+                  </li>
+                </ul>
+              </div>
+
+              <div className="footer-nav">
+                <h3 className="footer-nav-title">Support</h3>
+                <ul className="footer-links">
+                  <li>
+                    <a href="/shipping">Shipping</a>
+                  </li>
+                  <li>
+                    <a href="/returns">Returns</a>
+                  </li>
+                  <li>
+                    <a href="/faq">FAQ</a>
+                  </li>
+                  <li>
+                    <a href="/contact">Contact Us</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+
+            <div className="footer-subscribe">
+              <h3 className="footer-nav-title">Stay Connected</h3>
+              <p className="subscribe-text">Follow us on social media for inspiration and updates.</p>
+
+              <div className="social-links-large">
+                <a href="#" className="social-link-large">
+                  Instagram
+                </a>
+                <a href="#" className="social-link-large">
+                  Facebook
+                </a>
+                <a href="#" className="social-link-large">
+                  Pinterest
+                </a>
+              </div>
+            </div>
           </div>
 
-          <nav className="footer-links">
-            <h3 className="footer-heading">Links</h3>
-            <ul className="footer-list">
-              <li><a href="/" className="footer-link">Home</a></li>
-              <li><a href="/shop" className="footer-link">Shop</a></li>
-              <li><a href="/about" className="footer-link">About</a></li>
-              <li><a href="/contact" className="footer-link">Contact</a></li>
-            </ul>
-          </nav>
+          <div className="footer-bottom">
+            <div className="copyright">&copy; {new Date().getFullYear()} Earthen Crafts. All rights reserved.</div>
 
-          <div className="footer-help-newsletter">
-            <div className="footer-help">
-              <h3 className="footer-heading">Help</h3>
-              <ul className="footer-list">
-                <li><a href="/payment" className="footer-link">Payment Options</a></li>
-                <li><a href="/returns" className="footer-link">Returns</a></li>
-                <li><a href="/privacy" className="footer-link">Privacy Policies</a></li>
-              </ul>
-            </div>
-            <div className="footer-newsletter">
-              <h3 className="footer-heading">Newsletter</h3>
-              <form className="newsletter-form">
-                <div className="newsletter-input-container">
-                  <input
-                    type="email"
-                    placeholder="Enter Your Email Address"
-                    className="newsletter-input"
-                  />
-                </div>
-                <button type="submit" className="newsletter-button">
-                  SUBSCRIBE
-                </button>
-              </form>
+            <div className="footer-legal">
+              <a href="/privacy">Privacy Policy</a>
+              <a href="/terms">Terms of Service</a>
+              <a href="/accessibility">Accessibility</a>
             </div>
           </div>
-        </div>
-        <div className="footer-divider"></div>
-        <div className="footer-copyright">
-          &copy; 2025 Pottery Marketplace | Follow us on social media!
         </div>
       </footer>
     </div>
-  );
-};
+  )
+}
 
-export default Index;
+export default PotteryLanding;
+

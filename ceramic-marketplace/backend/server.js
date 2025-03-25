@@ -1,24 +1,24 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const authRoutes = require('./routes/auth'); 
-const productRoutes = require('./routes/productRoutes'); 
-const userRoutes = require('./routes/userRoutes'); 
-const contactRoutes = require('./routes/contactRoutes');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import authRoutes from './routes/auth.js'; 
+import productRoutes from './routes/productRoutes.js'; 
+import userRoutes from './routes/userRoutes.js'; 
+import contactRoutes from './routes/contactRoutes.js';
+import reservationRoutes from './routes/reservation.js';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(cors({
     origin: 'http://localhost:3000', 
 }));
 app.use(bodyParser.json());
-app.use('/images', express.static('public/images')); 
+app.use('/uploads', express.static('uploads')); 
 
-// Connect to MongoDB
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {
         console.log('MongoDB connected successfully'); 
@@ -27,11 +27,11 @@ mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTop
         console.error('MongoDB connection error:', err); 
     });
 
-// Routes
 app.use('/api/users', userRoutes); 
 app.use('/api/products', productRoutes); 
 app.use('/api/auth', authRoutes);
 app.use('/api/contact', contactRoutes); 
+app.use('/api', reservationRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

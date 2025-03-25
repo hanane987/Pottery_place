@@ -2,7 +2,6 @@
 
 const Reservation = require('../models/Reservation');
 const Product = require('../models/Product');
-const mongoose = require('mongoose');
 
 exports.createReservation = async (req, res) => {
     const { items } = req.body;
@@ -65,6 +64,7 @@ exports.getAllReservations = async (req, res) => {
             .populate('userId', 'nom email');
         res.json(reservations);
     } catch (error) {
+        console.error("Error fetching reservations:", error);
         res.status(500).json({ error: 'Error fetching reservations' });
     }
 };
@@ -77,6 +77,7 @@ exports.getOrdersByVendor = async (req, res) => {
             .populate('userId', 'nom email');
         res.json(orders);
     } catch (error) {
+        console.error("Error fetching orders:", error);
         res.status(500).json({ message: 'Error fetching orders', error });
     }
 };

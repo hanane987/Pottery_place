@@ -32,7 +32,7 @@ const Login = () => {
             } else if (role === 'vendeur') {
                 navigate('/vendeur-dashboard'); 
             } else {
-                navigate('/acheteur-dashboard'); 
+                navigate('/shop'); 
             }
         } catch (err) {
             setError('Invalid credentials');

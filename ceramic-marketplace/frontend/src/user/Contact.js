@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import '../styles/Contact.css';
+import Navbar from '../components/Navbar';
+import Footer from '../components/Footer';
 
 const App = () => {
   const [formData, setFormData] = useState({
@@ -41,49 +43,10 @@ const App = () => {
     }
 };
 return (
-    <div className="app-container">
-      {/* Header */}
-      <header className="header">
-        <div className="logo">
-          <img
-            src="https://cdn.builder.io/api/v1/image/assets/TEMP/76579c492ffbf19367381fac77e68c3f395f64d4"
-            alt="Logo"
-            className="logo-image"
-          />
-          <div className="logo-text">Furniro</div>
-        </div>
+  
 
-        <nav className="nav-menu">
-          <a href="/" className="nav-link">Home</a>
-          <a href="/shop" className="nav-link">Shop</a>
-          <a href="/about" className="nav-link">About</a>
-          <a href="/contact" className="nav-link active">Contact</a>
-        </nav>
-
-        <div className="header-icons">
-          <button className="icon-btn" aria-label="User Account">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M23.333 14V8.16666H25.6663V15.1667H23.333M23.333 19.8333H25.6663V17.5H23.333M11.6663 15.1667C14.7813 15.1667 20.9997 16.73 20.9997 19.8333V23.3333H2.33301V19.8333C2.33301 16.73 8.55134 15.1667 11.6663 15.1667ZM11.6663 4.66666C12.904 4.66666 14.091 5.15832 14.9662 6.03349C15.8413 6.90866 16.333 8.09565 16.333 9.33332C16.333 10.571 15.8413 11.758 14.9662 12.6332C14.091 13.5083 12.904 14 11.6663 14C10.4287 14 9.24168 13.5083 8.36651 12.6332C7.49134 11.758 6.99967 10.571 6.99967 9.33332C6.99967 8.09565 7.49134 6.90866 8.36651 6.03349C9.24168 5.15832 10.4287 4.66666 11.6663 4.66666Z" fill="black" />
-            </svg>
-          </button>
-          <button className="icon-btn" aria-label="Search">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M24.4997 24.5L19.266 19.257M22.1663 12.25C22.1663 14.8801 21.1216 17.4024 19.2618 19.2622C17.4021 21.1219 14.8797 22.1667 12.2497 22.1667C9.61961 22.1667 7.09727 21.1219 5.23753 19.2622C3.3778 17.4024 2.33301 14.8801 2.33301 12.25C2.33301 9.61995 3.3778 7.0976 5.23753 5.23787C7.09727 3.37813 9.61961 2.33334 12.2497 2.33334C14.8797 2.33334 17.4021 3.37813 19.2618 5.23787C21.1216 7.0976 22.1663 9.61995 22.1663 12.25Z" stroke="black" strokeWidth="2" strokeLinecap="round" />
-            </svg>
-          </button>
-          <button className="icon-btn" aria-label="Favorites">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M8.16634 3.5C4.94517 3.5 2.33301 6.08533 2.33301 9.275C2.33301 11.8498 3.35384 17.9608 13.4023 24.1383C13.5823 24.2479 13.789 24.3058 13.9997 24.3058C14.2104 24.3058 14.417 24.2479 14.597 24.1383C24.6455 17.9608 25.6663 11.8498 25.6663 9.275C25.6663 6.08533 23.0542 3.5 19.833 3.5C16.6118 3.5 13.9997 7 13.9997 7C13.9997 7 11.3875 3.5 8.16634 3.5Z" stroke="black" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            </svg>
-          </button>
-          <button className="icon-btn" aria-label="Cart">
-            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M25.2359 19.1926H8.95273L9.77031 17.5273L23.3547 17.5027C23.8141 17.5027 24.2078 17.1746 24.2898 16.7207L26.1711 6.19062C26.2203 5.91445 26.1465 5.63008 25.966 5.41406C25.8768 5.30775 25.7656 5.22211 25.64 5.16309C25.5144 5.10407 25.3774 5.07308 25.2387 5.07227L7.95742 5.01484L7.80977 4.32031C7.7168 3.87734 7.31758 3.55469 6.86367 3.55469H2.63906C2.38307 3.55469 2.13756 3.65638 1.95654 3.8374C1.77552 4.01841 1.67383 4.26393 1.67383 4.51992C1.67383 4.77592 1.77552 5.02143 1.95654 5.20245C2.13756 5.38346 2.38307 5.48516 2.63906 5.48516H6.08164L6.72695 8.55312L8.31562 16.2449L6.27031 19.5836C6.1641 19.727 6.10012 19.8972 6.08562 20.075C6.07113 20.2528 6.10669 20.4312 6.18828 20.5898C6.35234 20.9152 6.6832 21.1203 7.04961 21.1203H8.7668C8.40071 21.6065 8.20298 22.1988 8.20352 22.8074C8.20352 24.3551 9.46133 25.6129 11.009 25.6129C12.5566 25.6129 13.8145 24.3551 13.8145 22.8074C13.8145 22.1977 13.6121 21.6043 13.2512 21.1203H17.6562C17.2902 21.6065 17.0924 22.1988 17.093 22.8074C17.093 24.3551 18.3508 25.6129 19.8984 25.6129C21.4461 25.6129 22.7039 24.3551 22.7039 22.8074C22.7039 22.1977 22.5016 21.6043 22.1406 21.1203H25.2387C25.7691 21.1203 26.2039 20.6883 26.2039 20.1551C26.2023 19.8994 26.0996 19.6546 25.9183 19.4743C25.737 19.294 25.4917 19.1927 25.2359 19.1926Z" fill="black" />
-            </svg>
-          </button>
-        </div>
-      </header>
-
+  <div className="pottery-shop">
+      <Navbar />
       <main>
         {/* Hero Section */}
         <section className="hero-section">
@@ -258,54 +221,7 @@ return (
         </section>
       </main>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-content">
-          <div className="footer-about">
-            <div className="footer-logo">Funiro.</div>
-            <div className="footer-address">
-              400 University Drive Suite 200 Coral Gables,
-              <br />
-              FL 33134 USA
-            </div>
-          </div>
-
-          <div className="footer-links">
-            <div className="footer-column">
-              <h3 className="footer-heading">Links</h3>
-              <a href="/" className="footer-link">Home</a>
-              <a href="/shop" className="footer-link">Shop</a>
-              <a href="/about" className="footer-link">About</a>
-              <a href="/contact" className="footer-link">Contact</a>
-            </div>
-
-            <div className="footer-column">
-              <h3 className="footer-heading">Help</h3>
-              <a href="/payment" className="footer-link">Payment Options</a>
-              <a href="/returns" className="footer-link">Returns</a>
-              <a href="/privacy" className="footer-link">Privacy Policies</a>
-            </div>
-
-            <div className="footer-column">
-              <h3 className="footer-heading">Newsletter</h3>
-              <form className="footer-newsletter" onSubmit={(e) => e.preventDefault()}>
-                <input
-                  type="email"
-                  placeholder="Enter Your Email Address"
-                  className="footer-input"
-                />
-                <button type="submit" className="footer-button">
-                  SUBSCRIBE
-                </button>
-              </form>
-            </div>
-          </div>
-        </div>
-
-        <div className="footer-copyright">
-          2023 furino. All rights reverved
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

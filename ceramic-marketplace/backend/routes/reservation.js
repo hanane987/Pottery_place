@@ -2,6 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const reservationController = require('../controllers/reservationController');
+const Reservation = require('../models/Reservation');
 
 
 router.post('/reserve', reservationController.createReservation);
