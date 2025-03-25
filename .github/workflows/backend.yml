@@ -7,13 +7,15 @@ on:
       - 'ceramic-marketplace/backend/**'
   pull_request:
     branches: [ main ]
+    paths:
+      - 'ceramic-marketplace/backend/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: ./backend
+        working-directory: ./ceramic-marketplace/backend
 
     services:
       mongodb:
