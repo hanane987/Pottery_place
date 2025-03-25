@@ -27,3 +27,4 @@ yarn-error.log*
 # Ignore large files (specific .exe files)
 ceramic-marketplace/backend/minio.exe
 *.exe
+node_modules/
