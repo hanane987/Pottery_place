@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "test": "jest --detectOpenHandles",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "build": "babel . -d dist"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +29,9 @@
     "react-toastify": "^11.0.5"
   },
   "devDependencies": {
+    "@babel/cli": "^7.27.0",
+    "@babel/core": "^7.26.10",
+    "@babel/preset-env": "^7.26.9",
     "@eslint/js": "^9.23.0",
     "@shelf/jest-mongodb": "^4.3.2",
     "eslint": "^9.23.0",
