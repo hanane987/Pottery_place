@@ -5,8 +5,6 @@ import Register from './pages/auth/Register';
 import AdminDashboard from './pages/admin/AdminDashboard';
 import ManageProducts from './pages/admin/ManageProducts'; 
 import ManageUsers from './pages/admin/ManageUsers'; 
-import LandingPage from './pages/user/AcheteurDashboard'; 
-import Main from './pages/user/FurniroPage';
 import Index from './pages/user/Shop';
 import Home from './pages/user/Home';
 import About from './pages/user/About';
@@ -14,14 +12,13 @@ import Contact from './pages/user/Contact';
 import ContactMessagesWithSidebar from './pages/admin/ContactMessages';
 // import PotteryDashboard from './pages/vendeur/VendeurDashboard';
 import ProductDetail from './pages/user/ProductDetail';
-import PrivateRoute from './PrivateRoute'; 
 import Reservation from './pages/user/Reservation';
 import DashboardPage from './pages/vendeur/DashboardPage';
 import OrdersPage from './pages/vendeur/OrdersPage';
 import ProductsPage from './pages/vendeur/ProductsPage';
 const App = () => {
     
-    const userRole = localStorage.getItem('userRole'); 
+    // const userRole = localStorage.getItem('userRole'); 
 
     return (
         <Router>
@@ -32,7 +29,6 @@ const App = () => {
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
                 <Route path="/manage-users" element={<ManageUsers/>} />
                 <Route path="/manage-products" element={<ManageProducts />} />
-                <Route path="/furniro" element={<Main />} />
                 <Route path="/shop" element={<Index />} />
                 <Route path="/about" element={<About />} />
                 <Route path="/contact" element={<Contact />} />
