@@ -1,15 +1,13 @@
 // pages/About.jsx
 "use client"
 
-import React, { useState, useEffect } from 'react';
 import { ChevronRight, Award, Users, Heart, Clock } from 'lucide-react';
-import { useNavigate } from "react-router-dom";
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 import '../../styles/About.css';
+import React, { useState } from 'react';
 
 const About = () => {
-  const navigate = useNavigate();
   const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem('cart')) || []);
 
   return (

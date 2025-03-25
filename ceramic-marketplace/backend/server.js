@@ -1,14 +1,15 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const bodyParser = require('body-parser');
-const authRoutes = require('./routes/auth'); 
-const productRoutes = require('./routes/productRoutes'); 
-const userRoutes = require('./routes/userRoutes'); 
-const contactRoutes = require('./routes/contactRoutes');
-const reservationRoutes = require('./routes/reservation');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import authRoutes from './routes/auth.js'; 
+import productRoutes from './routes/productRoutes.js'; 
+import userRoutes from './routes/userRoutes.js'; 
+import contactRoutes from './routes/contactRoutes.js';
+import reservationRoutes from './routes/reservation.js';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 const app = express();
 

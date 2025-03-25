@@ -21,6 +21,7 @@ import Footer from "../../components/Footer"
 import "../../styles/product-detail.css"
 
 const ProductDetail = () => {
+  let userId ;
   const { id } = useParams()
   const navigate = useNavigate()
   const [product, setProduct] = useState(null)
@@ -78,12 +79,14 @@ const ProductDetail = () => {
         setRelatedProducts(data.filter((item) => item._id !== id).slice(0, 4))
       } catch (error) {
         console.error("Error fetching related products:", error)
+        console.log("User ID:", userId); 
+
         setRelatedProducts([])
       }
     }
 
     if (id) fetchProduct()
-  }, [id])
+  }, [id, userId])
 
   const handleQuantityChange = (amount) => {
     const newQuantity = quantity + amount

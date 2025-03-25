@@ -1,7 +1,7 @@
 // pages/Reservation.jsx
 "use client"
 
-import { useState, useEffect, useMemo } from "react"
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { useNavigate, Link } from "react-router-dom"
 import { toast } from "react-toastify"
 import { jwtDecode } from "jwt-decode"
@@ -42,35 +42,35 @@ const Reservation = () => {
     localStorage.setItem("cart", JSON.stringify(cart))
   }, [cart])
 
-  const fetchProducts = async () => {
-    setIsLoading(true)
+  const fetchProducts = useCallback(async () => {
+    setIsLoading(true);
     try {
       const productPromises = cart.map((item) =>
         fetch(`http://localhost:5000/api/products/${item.productId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         }).then((res) => {
-          if (!res.ok) throw new Error(`Failed to fetch product ${item.productId}`)
-          return res.json()
+          if (!res.ok) throw new Error(`Failed to fetch product ${item.productId}`);
+          return res.json();
         })
-      )
-      const productData = await Promise.all(productPromises)
-      setProducts(productData)
+      );
+      const productData = await Promise.all(productPromises);
+      setProducts(productData);
     } catch (error) {
-      console.error("Error fetching product details:", error)
-      setProducts([])
-      toast.error("Failed to load product details")
+      console.error("Error fetching product details:", error);
+      setProducts([]);
+      toast.error("Failed to load product details");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  }, [cart]);
 
   useEffect(() => {
     if (cart.length > 0) {
-      fetchProducts()
+      fetchProducts();
     } else {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }, [cart])
+  }, [cart, fetchProducts]);
 
   const productMap = useMemo(() => {
     return products.reduce((map, product) => {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { jwtDecode } from 'jwt-decode';
 import Sidebar from "../../components/common/Sidebar";
@@ -29,14 +29,8 @@ const OrdersPage = () => {
       console.log("No token found in localStorage");
     }
   }, []);
-
-  useEffect(() => {
-    if (vendorId) {
-      fetchOrders();
-    }
-  }, [vendorId]);
-
-  const fetchOrders = async () => {
+  
+  const fetchOrders = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:5000/api/reservations/vendor/${vendorId}`);
       console.log("Fetched Orders:", response.data);
@@ -45,7 +39,14 @@ const OrdersPage = () => {
       console.error("Error fetching orders:", error);
       setOrders([]);
     }
-  };
+  }, [vendorId]);
+
+  useEffect(() => {
+    if (vendorId) {
+      fetchOrders();
+    }
+  }, [vendorId, fetchOrders]);
+
 
   return (
     <div className="pottery-dashboard">

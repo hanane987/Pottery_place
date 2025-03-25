@@ -11,7 +11,7 @@ import {
   CheckCircle,
   Package,
   Headphones,
-  Mail,
+  
 } from "lucide-react"
 import Header from "../../components/Header"
 import Footer from "../../components/Footer"
@@ -21,7 +21,6 @@ const Home = () => {
   const navigate = useNavigate()
   const [cart, setCart] = useState(() => JSON.parse(localStorage.getItem("cart")) || [])
   const [featuredProducts, setFeaturedProducts] = useState([])
-  const [email, setEmail] = useState("")
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
@@ -67,30 +66,7 @@ const Home = () => {
     }
   }
 
-  const handleSubscribe = async (e) => {
-    e.preventDefault()
-    if (!email) {
-      toast.error("Please enter your email")
-      return
-    }
 
-    try {
-      const response = await fetch("http://localhost:5000/api/subscribe", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      })
-
-      if (!response.ok) throw new Error("Failed to subscribe")
-
-      toast.success("Thank you for subscribing!")
-      setEmail("")
-    } catch (error) {
-      toast.error(error.message || "Failed to subscribe. Please try again.")
-    }
-  }
 
   const formatPrice = (price) => (price === undefined ? "N/A" : `$${Number(price).toFixed(2)}`)
 

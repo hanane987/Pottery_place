@@ -36,12 +36,12 @@ const AdminDashboard = () => {
   }
 
   // Mock data for recent activity
-  const recentActivities = [
-    { id: 1, type: "user-add", title: "New Seller Registered", time: "2 hours ago", icon: "fas fa-user-plus" },
-    { id: 2, type: "product-add", title: "New Product Added", time: "4 hours ago", icon: "fas fa-box-open" },
-    { id: 3, type: "order", title: "New Order Placed", time: "6 hours ago", icon: "fas fa-shopping-cart" },
-    { id: 4, type: "message", title: "New Contact Message", time: "1 day ago", icon: "fas fa-envelope" },
-  ]
+  // const recentActivities = [
+  //   { id: 1, type: "user-add", title: "New Seller Registered", time: "2 hours ago", icon: "fas fa-user-plus" },
+  //   { id: 2, type: "product-add", title: "New Product Added", time: "4 hours ago", icon: "fas fa-box-open" },
+  //   { id: 3, type: "order", title: "New Order Placed", time: "6 hours ago", icon: "fas fa-shopping-cart" },
+  //   { id: 4, type: "message", title: "New Contact Message", time: "1 day ago", icon: "fas fa-envelope" },
+  // ]
 
   return (
     <div className={styles.dashboardContainer}>

@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const { storeContactMessage, getContactMessages } = require('../controllers/contactController');
 
 const router = express.Router();

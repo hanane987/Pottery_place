@@ -2,6 +2,7 @@
   "name": "backend",
   "version": "1.0.0",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "jest --detectOpenHandles",
     "lint": "eslint ."
@@ -11,7 +12,9 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@babel/generator": "^7.27.0",
     "bcrypt": "^5.1.1",
+    "caniuse-lite": "^1.0.30001707",
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",

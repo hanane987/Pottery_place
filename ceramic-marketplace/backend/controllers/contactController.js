@@ -22,4 +22,4 @@ exports.getContactMessages = async (req, res) => {
         console.error('Error fetching messages:', error);
         res.status(500).send('Error fetching messages');
     }
-};
+}; 

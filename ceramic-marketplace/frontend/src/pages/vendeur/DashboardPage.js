@@ -1,7 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { jwtDecode } from 'jwt-decode';
-import { useNavigate } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
 import Sidebar from "../../components/common/Sidebar";
 import TopNav from "../../components/common/TopNav";
 import Footer from "../../components/common/Footer";
@@ -16,7 +15,6 @@ const DashboardPage = () => {
   const [orders, setOrders] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [loading, setLoading] = useState(true);
-  const [artisans, setArtisans] = useState([]);
 
   const categories = [
     { id: "60b8d8f9e3c1f8c1d4e0e1a1", name: "Category 1" },
@@ -26,7 +24,7 @@ const DashboardPage = () => {
   ];
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = localStorage.getItem("token");
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
@@ -40,15 +38,7 @@ const DashboardPage = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (vendorId) {
-      fetchProducts();
-      fetchArtisans();
-      fetchOrders();
-    }
-  }, [vendorId]);
-
-  const fetchProducts = async () => {
+  const fetchProducts = useCallback(async () => {
     setLoading(true);
     try {
       if (!vendorId) {
@@ -68,20 +58,9 @@ const DashboardPage = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [vendorId, setProducts, setLoading]);
 
-  const fetchArtisans = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/api/users/artisans");
-      console.log("Fetched Artisans:", response.data);
-      setArtisans(Array.isArray(response.data) ? response.data : []);
-    } catch (error) {
-      console.error("Error fetching artisans:", error);
-      setArtisans([]);
-    }
-  };
-
-  const fetchOrders = async () => {
+  const fetchOrders = useCallback(async () => {
     try {
       const response = await axios.get(`http://localhost:5000/api/reservations/vendor/${vendorId}`);
       console.log("Fetched Orders:", response.data);
@@ -90,7 +69,14 @@ const DashboardPage = () => {
       console.error("Error fetching orders:", error);
       setOrders([]);
     }
-  };
+  }, [vendorId, setOrders]);
+
+  useEffect(() => {
+    if (vendorId) {
+      fetchProducts();
+      fetchOrders();
+    }
+  }, [vendorId, fetchProducts, fetchOrders]);
 
   const getCategoryName = (categoryId) => {
     const category = categories.find((cat) => cat.id === categoryId);
@@ -120,28 +106,32 @@ const DashboardPage = () => {
   }, {});
 
   const topProducts = products
-    .map(product => ({
+    .map((product) => ({
       ...product,
-      totalSold: productSales[product._id] || 0
+      totalSold: productSales[product._id] || 0,
     }))
     .sort((a, b) => b.totalSold - a.totalSold)
     .slice(0, 4);
-    return (
-      <div className="pottery-dashboard">
-        <Sidebar
-          activeSection={activeSection}
-          setActiveSection={setActiveSection}
+
+  return (
+    <div className="pottery-dashboard">
+      <Sidebar
+        activeSection={activeSection}
+        setActiveSection={setActiveSection}
+        mobileMenuOpen={mobileMenuOpen}
+        setMobileMenuOpen={setMobileMenuOpen}
+      />
+      <main className="main-content">
+        <TopNav
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
         />
-        <main className="main-content">
-          <TopNav
-            searchTerm={searchTerm}
-            setSearchTerm={setSearchTerm}
-            mobileMenuOpen={mobileMenuOpen}
-            setMobileMenuOpen={setMobileMenuOpen}
-          />
-          <div className="dashboard-content">
+        <div className="dashboard-content">
+          {loading ? (
+            <div>Loading...</div>
+          ) : (
             <div className="dashboard-section">
               <h2>Dashboard Overview</h2>
               <div className="stats-cards">
@@ -182,7 +172,7 @@ const DashboardPage = () => {
                   </div>
                 </div>
               </div>
-  
+
               <div className="dashboard-grid">
                 <div className="recent-orders">
                   <div className="section-header">
@@ -222,7 +212,7 @@ const DashboardPage = () => {
                     </tbody>
                   </table>
                 </div>
-  
+
                 <div className="top-products">
                   <div className="section-header">
                     <h3>Top Products</h3>
@@ -249,18 +239,17 @@ const DashboardPage = () => {
                         </div>
                       </li>
                     ))}
-                    {topProducts.length === 0 && (
-                      <li>No top products yet</li>
-                    )}
+                    {topProducts.length === 0 && <li>No top products yet</li>}
                   </ul>
                 </div>
               </div>
             </div>
-          </div>
-          <Footer />
-        </main>
-      </div>
-    );
-  };
-  
-  export default DashboardPage;
+          )}
+        </div>
+        <Footer />
+      </main>
+    </div>
+  );
+};
+
+export default DashboardPage;
