@@ -75,3 +75,108 @@ Ceramic Marketplace is a full-stack web application for browsing, reserving, and
    ```bash
    git clone <repository-url>
    cd ceramic-marketplace
+
+Install Frontend Dependencies:
+bash
+
+Réduire
+
+Envelopper
+
+Copier
+cd frontend
+npm install
+cd ..
+Install Backend Dependencies:
+bash
+
+Réduire
+
+Envelopper
+
+Copier
+cd ceramic-marketplace/backend
+npm install
+cd ../..
+Set Up Environment Variables:
+Create a .env file in ceramic-marketplace/backend/ with:
+text
+
+Réduire
+
+Envelopper
+
+Copier
+MONGODB_URI=mongodb://mongo:27017/ceramic_marketplace
+JWT_SECRET=your_jwt_secret
+Run with Docker Compose:
+bash
+
+Réduire
+
+Envelopper
+
+Copier
+docker-compose up --build
+Frontend: http://localhost:3000
+Backend API: http://localhost:5000
+MongoDB: localhost:27017
+Available Scripts
+Frontend:
+npm start: Starts the development server.
+npm build: Builds for production.
+npm test: Runs tests.
+npm run lint: Runs ESLint.
+npm run eject: Ejects from react-scripts.
+Backend:
+npm test: Runs Jest tests.
+npm run lint: Runs ESLint.
+npm run build: Transpiles code with Babel (output in dist/).
+Testing
+Frontend: Uses React Testing Library and Jest (npm test).
+Backend: Uses Jest, Supertest, and @shelf/jest-mongodb for API and database testing (npm test).
+Linting
+Both frontend and backend use ESLint for code quality:
+Frontend: npm run lint (React and Jest presets).
+Backend: npm run lint (React plugin included).
+Deployment
+Build the Frontend:
+bash
+
+Réduire
+
+Envelopper
+
+Copier
+cd frontend
+npm run build
+Serve the build/ directory (e.g., with Netlify or Vercel).
+Build the Backend:
+bash
+
+Réduire
+
+Envelopper
+
+Copier
+cd ceramic-marketplace/backend
+npm run build
+Deploy the dist/ directory to a server (e.g., AWS, Heroku) with MongoDB configured.
+Docker Deployment:
+Use the docker-compose.yml for production (remove development volumes like ./backend:/app).
+Dependencies
+Frontend:
+Production: react, react-router-dom, axios, react-toastify, jwt-decode, lucide-react, react-icons, @fortawesome/fontawesome-free.
+Dev: eslint.
+Backend:
+Production: express, mongoose, jsonwebtoken, bcrypt, multer, minio, cors, dotenv.
+Dev: jest, supertest, @shelf/jest-mongodb, eslint, babel.
+Notes
+Ensure the backend API is running for the frontend to function.
+Use environment variables for sensitive data (e.g., JWT_SECRET).
+The app supports modern browsers as per the browserslist configuration.
+Contributing
+Fork the repository, create a feature branch, and submit a pull request.
+Ensure tests pass and linting errors are resolved.
+License
+This project is licensed under the MIT License.
