@@ -122,3 +122,13 @@ Linting
 Both frontend and backend use ESLint for code quality:
 Frontend: npm run lint (React and Jest presets).
 Backend: npm run lint (React plugin included).
+
+Dependencies
+
+Frontend
+Production: react, react-router-dom, axios, react-toastify, jwt-decode, lucide-react, react-icons, @fortawesome/fontawesome-free.
+Dev: eslint.
+
+Backend
+Production: express, mongoose, jsonwebtoken, bcrypt, multer, minio, cors, dotenv.
+Dev: jest, supertest, @shelf/jest-mongodb, eslint, babel.
