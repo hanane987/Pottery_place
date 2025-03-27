@@ -85,11 +85,40 @@ npm install
 cd ..
 
 ### Install Backend Dependencies
-```bash
+
 cd ceramic-marketplace/backend
 npm install
 cd ../..
 
 ### Run with Docker Compose
-```bash
+
 docker-compose up --build
+
+### Available Scripts
+
+Frontend
+
+npm start: Starts the development server.
+npm build: Builds for production.
+npm test: Runs tests.
+npm run lint: Runs ESLint.
+npm run eject: Ejects from react-scripts.
+
+
+Backend
+
+npm test: Runs Jest tests.
+npm run lint: Runs ESLint.
+npm run build: Transpiles code with Babel (output in dist/).
+
+Testing
+
+Frontend: Uses React Testing Library and Jest (npm test).
+Backend: Uses Jest, Supertest, and @shelf/jest-mongodb for API and database testing (npm test).
+
+
+Linting
+
+Both frontend and backend use ESLint for code quality:
+Frontend: npm run lint (React and Jest presets).
+Backend: npm run lint (React plugin included).
