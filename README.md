@@ -83,3 +83,121 @@ Ceramic Marketplace is a full-stack web application for browsing, reserving, and
 cd frontend
 npm install
 cd ..
+
+Set Up Environment Variables
+Create a .env file in ceramic-marketplace/backend/ with:
+
+env
+Copier le code
+MONGODB_URI=mongodb://mongo:27017/ceramic_marketplace
+JWT_SECRET=your_jwt_secret
+🐳 Run with Docker Compose
+bash
+Copier le code
+docker-compose up --build
+Frontend: http://localhost:3000
+Backend API: http://localhost:5000
+MongoDB: localhost:27017
+📜 Available Scripts
+Frontend
+npm start - Starts the development server.
+npm build - Builds for production.
+npm test - Runs tests.
+npm run lint - Runs ESLint.
+npm run eject - Ejects from react-scripts.
+Backend
+npm test - Runs Jest tests.
+npm run lint - Runs ESLint.
+npm run build - Transpiles code with Babel (output in dist/).
+🧪 Testing
+Frontend
+Uses React Testing Library and Jest
+bash
+Copier le code
+npm test
+Backend
+Uses Jest, Supertest, and @shelf/jest-mongodb for API and database testing
+bash
+Copier le code
+npm test
+📏 Linting
+Both frontend and backend use ESLint for code quality:
+
+Frontend:
+
+bash
+Copier le code
+npm run lint
+(Uses React and Jest presets)
+
+Backend:
+
+bash
+Copier le code
+npm run lint
+(Includes React plugin)
+
+🚀 Deployment
+Build the Frontend
+bash
+Copier le code
+cd frontend
+npm run build
+Serve the build/ directory using Netlify, Vercel, or another hosting service.
+
+Build the Backend
+bash
+Copier le code
+cd ceramic-marketplace/backend
+npm run build
+Deploy the dist/ directory to a server (e.g., AWS, Heroku) with MongoDB configured.
+
+Docker Deployment
+Use the docker-compose.yml file for production.
+(Remove development volumes like ./backend:/app before deployment).
+
+📦 Dependencies
+Frontend
+Production:
+
+react
+react-router-dom
+axios
+react-toastify
+jwt-decode
+lucide-react
+react-icons
+@fortawesome/fontawesome-free
+Dev:
+
+eslint
+Backend
+Production:
+
+express
+mongoose
+jsonwebtoken
+bcrypt
+multer
+minio
+cors
+dotenv
+Dev:
+
+jest
+supertest
+@shelf/jest-mongodb
+eslint
+babel
+🔹 Notes
+Ensure the backend API is running for the frontend to function.
+Use environment variables for sensitive data (e.g., JWT_SECRET).
+The app supports modern browsers as per the browserslist configuration.
+🤝 Contributing
+Fork the repository.
+Create a feature branch (feature-branch).
+Commit your changes.
+Push to your branch.
+Open a pull request.
+📝 License
+This project is licensed under the MIT License.
