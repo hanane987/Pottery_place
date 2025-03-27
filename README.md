@@ -76,3 +76,10 @@ Ceramic Marketplace is a full-stack web application for browsing, reserving, and
    git clone https://github.com/hanane987/Pottery_place.git
    cd ceramic-marketplace
 
+## Installation Steps
+
+### Install Frontend Dependencies
+```bash
+cd frontend
+npm install
+cd ..
