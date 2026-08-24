@@ -16,17 +16,28 @@ import Reservation from './pages/user/Reservation';
 import DashboardPage from './pages/vendeur/DashboardPage';
 import OrdersPage from './pages/vendeur/OrdersPage';
 import ProductsPage from './pages/vendeur/ProductsPage';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const App = () => {
     
     // const userRole = localStorage.getItem('userRole'); 
 
     return (
         <Router>
+            <ToastContainer
+                position="top-right"
+                autoClose={3500}
+                newestOnTop
+                closeOnClick
+                pauseOnHover
+                theme="light"
+            />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/register" element={<Register />} />
                 <Route path="/admin-dashboard" element={<AdminDashboard />} />
+                <Route path="/view-statistics" element={<AdminDashboard />} />
                 <Route path="/manage-users" element={<ManageUsers/>} />
                 <Route path="/manage-products" element={<ManageProducts />} />
                 <Route path="/shop" element={<Index />} />

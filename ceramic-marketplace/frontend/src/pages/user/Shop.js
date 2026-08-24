@@ -28,11 +28,11 @@ const Shop = () => {
         const data = await response.json()
 
         let filteredProducts = data
-        if (searchTerm) filteredProducts = filteredProducts.filter(p => p.nom.toLowerCase().includes(searchTerm.toLowerCase()))
-        if (category) filteredProducts = filteredProducts.filter(p => p.categorie_id === category)
-        if (inStock) filteredProducts = filteredProducts.filter(p => p.quantite_stock > 0)
-        if (sortOrder === "asc") filteredProducts.sort((a, b) => a.prix - b.prix)
-        if (sortOrder === "desc") filteredProducts.sort((a, b) => b.prix - a.prix)
+        if (searchTerm) filteredProducts = filteredProducts.filter(p => String(p.nom || "").toLowerCase().includes(searchTerm.toLowerCase()))
+        if (category) filteredProducts = filteredProducts.filter(p => String(p.categorie_id || "") === category)
+        if (inStock) filteredProducts = filteredProducts.filter(p => p.etat === "disponible" && Number(p.quantite_stock) > 0)
+        if (sortOrder === "asc") filteredProducts.sort((a, b) => Number(a.prix || 0) - Number(b.prix || 0))
+        if (sortOrder === "desc") filteredProducts.sort((a, b) => Number(b.prix || 0) - Number(a.prix || 0))
 
         const productsPerPage = 8
         const startIndex = (currentPage - 1) * productsPerPage
@@ -50,7 +50,20 @@ const Shop = () => {
 
   const handleProductClick = (id) => navigate(`/product/${id}`)
 
+  const isProductAvailable = (product) =>
+    product.etat === "disponible" && Number(product.quantite_stock) > 0
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart))
+  }, [cart])
+
   const handleAddToCart = (product) => {
+    if (!localStorage.getItem("token")) {
+      toast.info("Please register to add products to your cart")
+      navigate("/register")
+      return
+    }
+
     const existingItem = cart.find(item => item.productId === product._id)
     if (existingItem) {
       setCart(cart.map(item => 
@@ -80,14 +93,14 @@ const Shop = () => {
                     type="text" 
                     placeholder="Search products..." 
                     value={searchTerm} 
-                    onChange={(e) => setSearchTerm(e.target.value)} 
+                    onChange={(e) => { setSearchTerm(e.target.value); setCurrentPage(1) }} 
                   />
                 </div>
                 <label className="stock-checkbox">
                   <input 
                     type="checkbox" 
                     checked={inStock} 
-                    onChange={() => setInStock(!inStock)} 
+                    onChange={() => { setInStock(!inStock); setCurrentPage(1) }} 
                   />
                   <span>In Stock Only</span>
                 </label>
@@ -95,7 +108,7 @@ const Shop = () => {
               <div className="filter-options">
                 <div className="filter-group">
                   <label>Category</label>
-                  <select value={category} onChange={(e) => setCategory(e.target.value)}>
+                  <select value={category} onChange={(e) => { setCategory(e.target.value); setCurrentPage(1) }}>
                     <option value="">All Categories</option>
                     <option value="60b8d8f9e3c1f8c1d4e0e1a1">Vases</option>
                     <option value="60b8d8f9e3c1f8c1d4e0e1a4">Bowls</option>
@@ -106,7 +119,7 @@ const Shop = () => {
                 </div>
                 <div className="filter-group">
                   <label>Sort by</label>
-                  <select value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+                  <select value={sortOrder} onChange={(e) => { setSortOrder(e.target.value); setCurrentPage(1) }}>
                     <option value="asc">Price: Low to High</option>
                     <option value="desc">Price: High to Low</option>
                   </select>
@@ -132,21 +145,25 @@ const Shop = () => {
                         alt={product.nom}
                         className="product-image"
                       />
-                      {product.quantite_stock <= 0 && (
-                        <div className="sold-out-badge">Sold Out</div>
+                      {isProductAvailable(product) ? (
+                        <div className="stock-status-badge in-stock-badge">
+                          In Stock ({product.quantite_stock})
+                        </div>
+                      ) : (
+                        <div className="stock-status-badge sold-out-badge">Out of Stock</div>
                       )}
                       <div className="product-actions-overlay">
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            if (product.quantite_stock > 0) {
+                            if (isProductAvailable(product)) {
                               handleAddToCart(product);
                             }
                           }}
                           className="add-to-cart-btn"
-                          disabled={product.quantite_stock <= 0}
+                          disabled={!isProductAvailable(product)}
                         >
-                          {product.quantite_stock > 0 ? "Add to Cart" : "Sold Out"}
+                          {isProductAvailable(product) ? "Add to Cart" : "Out of Stock"}
                         </button>
                       </div>
                     </div>
@@ -162,16 +179,21 @@ const Shop = () => {
                       <h3 className="product-name" onClick={() => handleProductClick(product._id)}>
                         {product.nom}
                       </h3>
+                      <p className="product-description">
+                        {product.description
+                          ? `${product.description.slice(0, 30)}${product.description.length > 30 ? "..." : ""}`
+                          : "Handcrafted ceramic piece"}
+                      </p>
                       <div className="product-footer">
                         <div className="product-price">{formatPrice(product.prix)}</div>
                         <button 
                           className="quick-cart-btn"
                           onClick={() => {
-                            if (product.quantite_stock > 0) {
+                            if (isProductAvailable(product)) {
                               handleAddToCart(product);
                             }
                           }}
-                          disabled={product.quantite_stock <= 0}
+                          disabled={!isProductAvailable(product)}
                         >
                           <ShoppingCart size={16} />
                         </button>

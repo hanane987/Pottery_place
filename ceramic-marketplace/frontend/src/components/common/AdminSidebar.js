@@ -23,11 +23,6 @@ const AdminSidebar = () => {
           </Link>
         </li>
         <li>
-          <Link to="/view-statistics">
-            <i className="fas fa-chart-line"></i> View Statistics
-          </Link>
-        </li>
-        <li>
           <Link to="/contact-messages">
             <i className="fas fa-envelope"></i> Contact Messages
           </Link>

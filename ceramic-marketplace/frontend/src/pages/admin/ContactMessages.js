@@ -6,6 +6,7 @@ import styles from "../../styles/ContactMessages.module.css";
 import dashboardStyles from "../../styles/AdminDashboard.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import AdminSidebar from "../../components/common/AdminSidebar";
+import AdminTopNav from "../../components/common/AdminTopNav";
 
 const ContactMessagesWithSidebar = () => {
   const [messages, setMessages] = useState([]);
@@ -50,35 +51,17 @@ const ContactMessagesWithSidebar = () => {
 
   const filteredMessages = messages.filter(
     (message) =>
-      message.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      message.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      message.subject.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      message.message.toLowerCase().includes(searchTerm.toLowerCase()),
+      String(message.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(message.email || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(message.subject || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+      String(message.message || "").toLowerCase().includes(searchTerm.toLowerCase()),
   ); 
   return (
     <div className={dashboardStyles.dashboardContainer}>
       <AdminSidebar />
+      <AdminTopNav searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <div className={dashboardStyles.content}>
-        <header className={dashboardStyles.navbar}>
-          <div className={dashboardStyles.searchContainer}>
-            <button className={dashboardStyles.searchButton}>
-              <i className="fas fa-search"></i>
-            </button>
-            <input
-              type="text"
-              placeholder="Search messages..."
-              className={dashboardStyles.searchBar}
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <div className={dashboardStyles.userInfo}>
-            <i className="fas fa-bell"></i>
-            <img src="/placeholder.svg?height=40&width=40" alt="User" className={dashboardStyles.userImage} />
-          </div>
-        </header>
-
         <div className={styles.container}>
           <h1>Contact Messages</h1>
 
@@ -107,12 +90,12 @@ const ContactMessagesWithSidebar = () => {
               </thead>
               <tbody>
                 {filteredMessages.map((message) => (
-                  <tr key={message._id || message.id || Math.random().toString()}>
+                  <tr key={message._id || message.id}>
                     <td>{message.name}</td>
                     <td>{message.email}</td>
                     <td>{message.subject}</td>
                     <td>{message.message}</td>
-                    <td>{message.date ? new Date(message.date).toLocaleDateString() : "N/A"}</td>
+                    <td>{message.date || message.createdAt ? new Date(message.date || message.createdAt).toLocaleDateString() : "N/A"}</td>
                     <td>
                       <span
                         className={`${styles.statusBadge} ${message.isRead ? styles.statusRead : styles.statusNew}`}

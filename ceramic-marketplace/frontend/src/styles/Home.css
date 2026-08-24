@@ -610,10 +610,11 @@
 .author-image {
   width: 60px;
   height: 60px;
+  border: 3px solid var(--clay-primary);
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid white;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+  object-position: center;
+  box-shadow: 0 4px 12px rgba(107, 78, 49, 0.18);
 }
 
 .author-name {
@@ -1152,6 +1153,7 @@
     font-size: 1.1rem;
   }
 }
+
 
 /* Add this to the form styles in Reservation.css */
 textarea {

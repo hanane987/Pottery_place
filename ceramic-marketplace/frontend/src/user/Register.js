@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import styles from '../styles/Login.module.css'; 
+import { toast } from 'react-toastify';
 
 const Register = () => {
     const [name, setName] = useState(''); 
@@ -27,7 +28,7 @@ const Register = () => {
         }
         try {
             await axios.post('http://localhost:5000/api/auth/register', { name, email, password, role });
-            alert('Registration successful');
+            toast.success('Registration successful');
         } catch (err) {
             setError('Error registering user');
         }

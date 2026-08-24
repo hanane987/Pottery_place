@@ -6,6 +6,7 @@ import axios from "axios";
 import styles from "../../styles/ManageProducts.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import AdminSidebar from "../../components/common/AdminSidebar";
+import AdminTopNav from "../../components/common/AdminTopNav";
 
 const ManageProducts = () => {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const ManageProducts = () => {
     prix: "",
     quantite_stock: "",
     artisan_id: "",
+    categorie_id: "",
     images: [],
     etat: "disponible",
   });
@@ -110,6 +112,7 @@ const ManageProducts = () => {
         prix: "",
         quantite_stock: "",
         artisan_id: "",
+        categorie_id: "",
         images: [],
         etat: "disponible",
       });
@@ -129,6 +132,7 @@ const ManageProducts = () => {
       prix: product.prix,
       quantite_stock: product.quantite_stock,
       artisan_id: product.artisan_id,
+      categorie_id: product.categorie_id || "",
       images: [],
       etat: product.etat,
     });
@@ -166,6 +170,7 @@ const ManageProducts = () => {
       )}
 
       <AdminSidebar />
+      <AdminTopNav />
 
       <div className={styles.container}>
         <h2>Manage Products</h2>
@@ -238,9 +243,21 @@ const ManageProducts = () => {
               <option value="">Select Artisan</option>
               {artisans.map((artisan) => (
                 <option key={artisan._id} value={artisan._id}>
-                  {artisan.nom}
+                  {artisan.name || artisan.nom || artisan.email}
                 </option>
               ))}
+            </select>
+          </div>
+
+          <div className={styles.inputGroup}>
+            <label>Category</label>
+            <select name="categorie_id" value={formData.categorie_id} onChange={handleChange} required>
+              <option value="">Select Category</option>
+              <option value="60b8d8f9e3c1f8c1d4e0e1a1">Vases</option>
+              <option value="60b8d8f9e3c1f8c1d4e0e1a4">Bowls</option>
+              <option value="60b8d8f9e3c1f8c1d4e0e1a2">Plates</option>
+              <option value="60b8d8f9e3c1f8c1d4e0e1a3">Mugs</option>
+              <option value="60b8d8f9e3c1f8c1d4e0e1a5">Decorative</option>
             </select>
           </div>
 
@@ -316,6 +333,11 @@ const ManageProducts = () => {
                 />
                 <div className={styles.productDetails}>
                   <h4>{product.nom}</h4>
+                  <p className={styles.productDescription}>
+                    {product.description
+                      ? `${product.description.slice(0, 30)}${product.description.length > 30 ? "..." : ""}`
+                      : "No description available"}
+                  </p>
                   <p>{product.prix} €</p>
                   <div
                     className={`${styles.productStock} ${
@@ -332,10 +354,22 @@ const ManageProducts = () => {
                       : "Out of Stock"}
                   </div>
                   <div className={styles.buttonGroup}>
-                    <button onClick={() => handleEdit(product)} className={styles.editButton}>
+                    <button
+                      type="button"
+                      onClick={() => handleEdit(product)}
+                      className={styles.editButton}
+                      aria-label={`Edit ${product.nom}`}
+                      title="Edit product"
+                    >
                       <i className="fas fa-edit"></i> Edit
                     </button>
-                    <button onClick={() => handleDelete(product._id)} className={styles.deleteButton}>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(product._id)}
+                      className={styles.deleteButton}
+                      aria-label={`Delete ${product.nom}`}
+                      title="Delete product"
+                    >
                       <i className="fas fa-trash"></i> Delete
                     </button>
                   </div>

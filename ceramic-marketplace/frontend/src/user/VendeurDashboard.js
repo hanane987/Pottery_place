@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { jwtDecode } from 'jwt-decode';
 import "../styles/pottery-dashboard.css";
+import { toast } from "react-toastify";
 import {
   Home,
   Package,
@@ -118,7 +119,7 @@ const PotteryDashboard = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/reservations/vendor/${vendorId}`);
+      const response = await axios.get(`http://localhost:5000/api/vendor/${vendorId}`);
       console.log("Fetched Orders:", response.data);
       setOrders(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
@@ -185,7 +186,7 @@ const PotteryDashboard = () => {
       fetchProducts();
     } catch (error) {
       console.error("Error saving product:", error.response ? error.response.data : error.message);
-      alert("Error saving product. Please try again.");
+      toast.error("Error saving product. Please try again.");
     }
   };
 
@@ -231,6 +232,12 @@ const PotteryDashboard = () => {
     });
     setPreviewImages([]);
     setIsEditMode(false);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("cart");
+    window.location.href = "/";
   };
 
   const getCategoryName = (categoryId) => {
@@ -288,7 +295,7 @@ const PotteryDashboard = () => {
           </ul>
         </nav>
         <div className="sidebar-footer">
-          <button className="logout-button">
+          <button className="logout-button" onClick={handleLogout}>
             <LogOut size={20} />
             <span>Logout</span>
           </button>

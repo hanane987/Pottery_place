@@ -1,63 +1,178 @@
-/* ManageUsers.module.css */
 :root {
-    --primary-color: #2c3e50;
-    --secondary-color: #34495e;
-    --accent-color: #e67e22;
-    --text-light: #ecf0f1;
-    --text-dark: #2c3e50;
-    --success-color: #27ae60;
-    --danger-color: #e74c3c;
-    --card-bg: #fff;
-    --box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    --border-radius: 10px;
+    --users-ink: #23313a;
+    --users-muted: #6e7d82;
+    --users-line: #dce5e3;
+    --users-surface: #ffffff;
+    --users-mint: #dcefe8;
+    --users-coral: #d86f5f;
+    --users-green: #287b67;
 }
 
-/* Container for the Manage Users component */
-/* ManageUsers.module.css */
-
-.dashboardContainer {
-    padding: 20px;
+.manageUsersContainer {
+    width: min(1120px, calc(100% - 328px));
+    margin: 0 24px 0 304px;
+    padding: 110px 0 56px;
+    color: var(--users-ink);
 }
 
-table {
+.manageUsersContainer h1 {
+    position: relative;
+    margin: 0 0 24px;
+    font-size: clamp(1.8rem, 3vw, 2.6rem);
+    letter-spacing: 0;
+}
+
+.manageUsersContainer h1::after {
+    display: block;
+    width: 56px;
+    height: 4px;
+    margin-top: 10px;
+    border-radius: 4px;
+    background: var(--users-coral);
+    content: "";
+}
+
+.usersTable {
     width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
+    overflow: hidden;
+    border: 1px solid var(--users-line);
+    border-radius: 14px;
+    border-spacing: 0;
+    background: var(--users-surface);
+    box-shadow: 0 18px 45px rgba(35, 49, 58, 0.1);
 }
 
-th, td {
-    padding: 12px;
+.usersTable th,
+.usersTable td {
+    padding: 18px 22px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
 }
 
-th {
-    background-color: var(--primary-color); /* Use your primary color */
-    color: var(--text-light); /* Light text color */
+.usersTable th {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+    background: var(--users-ink);
+    color: #f4fbf8;
+    font-size: 0.76rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
 }
 
-tr:hover {
-    background-color: rgba(0, 0, 0, 0.05); /* Hover effect for rows */
+.usersTable td {
+    border-bottom: 1px solid var(--users-line);
+    color: var(--users-muted);
+    font-size: 0.96rem;
 }
 
-button {
-    padding: 8px 12px;
-    border: none;
-    border-radius: var(--border-radius);
+.usersTable tbody tr {
+    transition: background-color 180ms ease, transform 180ms ease;
+}
+
+.usersTable tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.usersTable tbody tr:hover {
+    background: #f3faf7;
+}
+
+.statusBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 11px;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.statusBadge::before {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: currentColor;
+    content: "";
+}
+
+.statusActive {
+    background: var(--users-mint);
+    color: var(--users-green);
+}
+
+.statusBanned {
+    background: #fbe5e1;
+    color: #b34e40;
+}
+
+.actionButton {
+    min-width: 78px;
+    padding: 9px 14px;
+    border: 1px solid transparent;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 700;
+    transition: transform 180ms ease, box-shadow 180ms ease, background 180ms ease;
 }
 
-button:hover {
-    opacity: 0.8; /* Slightly transparent on hover */
+.actionButton:hover {
+    opacity: 1;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 12px rgba(35, 49, 58, 0.14);
 }
 
-.ban-button {
-    background-color: var(--danger-color); /* Danger color for ban button */
-    color: var(--text-light);
+.banButton {
+    background: #fff4f1;
+    border-color: #f2c8c0;
+    color: #b34e40;
 }
 
-.unban-button {
-    background-color: var(--success-color); /* Success color for unban button */
-    color: var(--text-light);
+.unbanButton {
+    background: #e8f5f0;
+    border-color: #b9dfd1;
+    color: var(--users-green);
+}
+
+.loadingSpinner,
+.emptyState {
+    display: grid;
+    place-items: center;
+    min-height: 230px;
+    border: 1px dashed var(--users-line);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.72);
+    color: var(--users-muted);
+}
+
+.spinner {
+    width: 34px;
+    height: 34px;
+    border: 3px solid var(--users-mint);
+    border-top-color: var(--users-coral);
+    border-radius: 50%;
+    animation: spin 800ms linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@media (max-width: 700px) {
+    .manageUsersContainer {
+        width: calc(100% - 28px);
+        margin: 0 14px;
+        padding-top: 28px;
+    }
+
+    .usersTable {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .usersTable th,
+    .usersTable td {
+        padding: 15px 16px;
+    }
 }

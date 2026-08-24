@@ -1,10 +1,11 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import axios from "axios";
 import styles from "../../styles/AdminDashboard.module.css";
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import AdminSidebar from "../../components/common/AdminSidebar";
+import AdminTopNav from "../../components/common/AdminTopNav";
 
 const AdminDashboard = () => {
   const [statistics, setStatistics] = useState({
@@ -13,6 +14,7 @@ const AdminDashboard = () => {
     productCount: 0,
   });
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     fetchStatistics();
@@ -22,11 +24,10 @@ const AdminDashboard = () => {
     setLoading(true);
     try {
       const response = await axios.get("http://localhost:5000/api/users/statistics");
-      console.log("Fetched statistics:", response.data);
       setStatistics({
-        vendeurCount: response.data.vendeurCount,
-        acheteurCount: response.data.acheteurCount,
-        productCount: response.data.totalProducts,
+        vendeurCount: response.data.vendeurCount || 0,
+        acheteurCount: response.data.acheteurCount || 0,
+        productCount: response.data.totalProducts || 0,
       });
     } catch (error) {
       console.error("Error fetching statistics:", error);
@@ -37,8 +38,11 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    window.location.href = "/login";
+    localStorage.removeItem("token");
+    localStorage.removeItem("cart");
+    window.location.href = "/";
   }; 
+
   return (
     <div className={styles.dashboardContainer}>
       {loading && (
@@ -47,21 +51,13 @@ const AdminDashboard = () => {
         </div>
       )}
 
+      {/* Sidebar */}
       <AdminSidebar />
 
+      {/* Main Content Area */}
       <div className={styles.content}>
-        <header className={styles.navbar}>
-          <div className={styles.searchContainer}>
-            <button className={styles.searchButton}>
-              <i className="fas fa-search"></i>
-            </button>
-            <input type="text" placeholder="Search..." className={styles.searchBar} />
-          </div>
-          <div className={styles.userInfo}>
-            <i className="fas fa-bell"></i>
-            <img src="/placeholder.svg?height=40&width=40" alt="User" className={styles.userImage} />
-          </div>
-        </header>
+        {/* Unified Top Navigation Header (Search, Notifications, Profile, Logout) */}
+        <AdminTopNav searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
         <h1>Welcome to the Admin Dashboard</h1>
 

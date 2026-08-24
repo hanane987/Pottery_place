@@ -98,6 +98,12 @@ const ProductDetail = () => {
   }
 
   const handleAddToCart = () => {
+    if (!localStorage.getItem("token")) {
+      toast.info("Please register to add products to your cart")
+      navigate("/register")
+      return
+    }
+
     if (!product || product.quantite_stock < quantity) {
       toast.error(`Insufficient stock. Only ${product.quantite_stock} items available`)
       return

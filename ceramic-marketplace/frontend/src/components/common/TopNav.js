@@ -1,6 +1,6 @@
 import { Search, Bell } from "lucide-react";
 
-const TopNav = ({ searchTerm, setSearchTerm, mobileMenuOpen, setMobileMenuOpen }) => {
+const TopNav = ({ searchTerm, setSearchTerm, mobileMenuOpen, setMobileMenuOpen, userName = "Vendor" }) => {
   return (
     <header className="top-nav">
       <button className="mobile-menu-toggle" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
@@ -23,9 +23,8 @@ const TopNav = ({ searchTerm, setSearchTerm, mobileMenuOpen, setMobileMenuOpen }
           <span className="notification-badge">3</span>
         </button>
         <div className="user-profile">
-          <img src="/placeholder.svg?height=40&width=40" alt="User" />
           <div className="user-info">
-            <p className="user-name">Vendor Name</p>
+            <p className="user-name">{userName}</p>
             <p className="user-role">Vendor</p>
           </div>
         </div>

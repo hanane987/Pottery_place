@@ -1,7 +1,6 @@
-const ContactMessage = require('../models/Contact');
+import ContactMessage from '../models/Contact.js';
 
-
-exports.storeContactMessage = async (req, res) => {
+export const storeContactMessage = async (req, res) => {
     const { name, email, subject, message } = req.body;
 
     const newMessage = new ContactMessage({ name, email, subject, message });
@@ -14,7 +13,7 @@ exports.storeContactMessage = async (req, res) => {
     }
 };
 
-exports.getContactMessages = async (req, res) => {
+export const getContactMessages = async (req, res) => {
     try {
         const messages = await ContactMessage.find();
         res.status(200).json(messages);
@@ -22,4 +21,4 @@ exports.getContactMessages = async (req, res) => {
         console.error('Error fetching messages:', error);
         res.status(500).send('Error fetching messages');
     }
-}; 
+};

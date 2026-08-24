@@ -8,16 +8,21 @@ import userRoutes from './routes/userRoutes.js';
 import contactRoutes from './routes/contactRoutes.js';
 import reservationRoutes from './routes/reservation.js';
 import dotenv from 'dotenv';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 dotenv.config();
 
 const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:3000', 
+    origin: ['http://localhost:3000', 'http://localhost:3001'],
 }));
 app.use(bodyParser.json());
-app.use('/uploads', express.static('uploads')); 
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => {

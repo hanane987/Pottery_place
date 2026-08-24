@@ -44,6 +44,12 @@ const Home = () => {
   }
 
   const handleAddToCart = (product) => {
+    if (!localStorage.getItem("token")) {
+      toast.info("Please register to add products to your cart")
+      navigate("/register")
+      return
+    }
+
     const existingItem = cart.find((item) => item.productId === product._id)
 
     if (existingItem) {
@@ -78,7 +84,7 @@ const Home = () => {
         {/* Hero Section */}
         <section className="home-hero">
           <div className="hero-image-container">
-            <img src="/images/FIL6.jpg" alt="Handcrafted Pottery" className="hero-image" />
+            <img src="/images/colors.jpg" alt="Handcrafted Pottery" className="hero-image" />
             <div className="hero-overlay"></div>
           </div>
 
@@ -250,7 +256,7 @@ const Home = () => {
                   are even more beautiful in person. These pieces have transformed our dining experience."
                 </p>
                 <div className="testimonial-author">
-                  <img src="/placeholder.svg?height=60&width=60&text=JD" alt="Jane Doe" className="author-image" />
+                  <img src="/images/female.jpg" alt="Jane Doe" className="author-image" />
                   <div className="author-info">
                     <h4 className="author-name">Jane Doe</h4>
                     <p className="author-location">Miami, FL</p>
@@ -269,7 +275,7 @@ const Home = () => {
                   consistent, and the designs are timeless. I always receive compliments when guests visit my home."
                 </p>
                 <div className="testimonial-author">
-                  <img src="/placeholder.svg?height=60&width=60&text=MS" alt="Michael Smith" className="author-image" />
+                  <img src="/images/potteryman.jpg" alt="Michael Smith" className="author-image" />
                   <div className="author-info">
                     <h4 className="author-name">Michael Smith</h4>
                     <p className="author-location">New York, NY</p>
@@ -288,7 +294,7 @@ const Home = () => {
                   for flowers; it's a work of art that stands beautifully on its own. Worth every penny."
                 </p>
                 <div className="testimonial-author">
-                  <img src="/placeholder.svg?height=60&width=60&text=EJ" alt="Emily Johnson" className="author-image" />
+                  <img src="/images/work.jpg" alt="Emily Johnson" className="author-image" />
                   <div className="author-info">
                     <h4 className="author-name">Emily Johnson</h4>
                     <p className="author-location">Chicago, IL</p>

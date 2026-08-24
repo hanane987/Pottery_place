@@ -1,8 +1,8 @@
 
-const User = require('../models/User'); 
-const Product = require('../models/Product'); 
+import User from '../models/User.js';
+import Product from '../models/Product.js';
 
-exports.getArtisans = async (req, res) => {
+export const getArtisans = async (req, res) => {
     try {
         const artisans = await User.find({
             $or: [
@@ -22,7 +22,7 @@ exports.getArtisans = async (req, res) => {
     }
 };
 
-exports.getStatistics = async (req, res) => {
+export const getStatistics = async (req, res) => {
     try {
         const vendeurCount = await User.countDocuments({ role: 'vendeur' });
         const acheteurCount = await User.countDocuments({ role: 'acheteur' });
@@ -43,7 +43,7 @@ exports.getStatistics = async (req, res) => {
     }
 };
 
-exports.banUser = async (req, res) => {
+export const banUser = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(req.params.userId, { is_banned: true }, { new: true });
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -53,7 +53,7 @@ exports.banUser = async (req, res) => {
     }
 };
 
-exports.unbanUser = async (req, res) => {
+export const unbanUser = async (req, res) => {
     try {
         const user = await User.findByIdAndUpdate(req.params.userId, { is_banned: false }, { new: true });
         if (!user) return res.status(404).json({ message: 'User not found' });
@@ -63,10 +63,22 @@ exports.unbanUser = async (req, res) => {
     }
 };
 
-exports.getAllUsers = async (req, res) => {
+export const getAllUsers = async (req, res) => {
     try {
         const users = await User.find(); 
         res.json(users);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+export const getUserById = async (req, res) => {
+    try {
+        const userId = req.params.id || req.params.userId;
+        const user = await User.findById(userId).select('name email role');
+        
+        if (!user) return res.status(404).json({ message: 'User not found' });
+        res.json(user);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

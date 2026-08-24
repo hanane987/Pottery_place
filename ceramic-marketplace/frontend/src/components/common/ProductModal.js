@@ -116,7 +116,7 @@ const ProductModal = ({
                     required
                     disabled
                   >
-                    <option value={vendorId}>{artisans.find(a => a._id === vendorId)?.nom || "Current Vendor"}</option>
+                    <option value={vendorId}>{artisans.find(a => a._id === vendorId)?.name || "Current Vendor"}</option>
                   </select>
                 </div>
 

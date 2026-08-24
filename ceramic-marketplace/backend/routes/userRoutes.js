@@ -1,12 +1,14 @@
 // backend/routes/userRoutes.js
-const express = require('express');
+import express from 'express';
+import { getArtisans, getStatistics, banUser, unbanUser, getUserById } from '../controllers/userController.js';
+
 const router = express.Router();
-const { getArtisans, getStatistics, banUser, unbanUser } = require('../controllers/userController');
 
 router.get('/artisans', getArtisans);
 router.get('/statistics', getStatistics);
 
 router.put('/ban/:userId', banUser);
 router.put('/unban/:userId', unbanUser);
+router.get('/:userId', getUserById);
 
-module.exports = router;
+export default router;

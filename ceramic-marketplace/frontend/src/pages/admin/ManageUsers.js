@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import adminStyles from "../../styles/AdminDashboard.module.css";
-import styles from "../../styles/ManageUsers.css"; // Updated to CSS module
+import styles from "../../styles/ManageUsers.module.css";
 import AdminSidebar from "../../components/common/AdminSidebar";
+import AdminTopNav from "../../components/common/AdminTopNav";
 
 const ManageUsers = () => {
   const [users, setUsers] = useState([]);
@@ -45,6 +46,7 @@ const ManageUsers = () => {
     return (
       <div className={adminStyles.dashboardContainer}>
         <AdminSidebar />
+        <AdminTopNav />
         <div className={styles.manageUsersContainer}>
           <h1>Manage Users</h1>
           <div className={styles.loadingSpinner}>
@@ -59,6 +61,7 @@ const ManageUsers = () => {
     return (
       <div className={adminStyles.dashboardContainer}>
         <AdminSidebar />
+        <AdminTopNav />
         <div className={styles.manageUsersContainer}>
           <h1>Manage Users</h1>
           <div className={styles.emptyState}>
@@ -72,6 +75,7 @@ const ManageUsers = () => {
   return (
     <div className={adminStyles.dashboardContainer}>
       <AdminSidebar />
+      <AdminTopNav />
       <div className={styles.manageUsersContainer}>
         <h1>Manage Users</h1>
         <table className={styles.usersTable}>

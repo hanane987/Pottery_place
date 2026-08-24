@@ -8,6 +8,7 @@ import ProductModal from "../../components/common/ProductModal";
 import "../../styles/pottery-dashboard.css";
 
 import { Search, Plus, Edit, Trash2 } from "lucide-react";
+import { toast } from "react-toastify";
 
 const ProductsPage = () => {
   const [vendorId, setVendorId] = useState(null);
@@ -33,10 +34,11 @@ const ProductsPage = () => {
   const [previewImages, setPreviewImages] = useState([]);
 
   const categories = [
-    { id: "60b8d8f9e3c1f8c1d4e0e1a1", name: "Category 1" },
-    { id: "60b8d8f9e3c1f8c1d4e0e1a2", name: "Category 2" },
-    { id: "60b8d8f9e3c1f8c1d4e0e1a3", name: "Category 3" },
-    { id: "60b8d8f9e3c1f8c1d4e0e1a4", name: "Category 4" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a1", name: "Vases" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a4", name: "Bowls" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a2", name: "Plates" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a3", name: "Mugs" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a5", name: "Decorative" },
   ];
 
   useEffect(() => {
@@ -161,7 +163,7 @@ const ProductsPage = () => {
       fetchProducts();
     } catch (error) {
       console.error("Error saving product:", error.response ? error.response.data : error.message);
-      alert("Error saving product. Please try again.");
+      toast.error("Error saving product. Please try again.");
     }
   };
 
@@ -178,7 +180,7 @@ const ProductsPage = () => {
       images: product.images,
       etat: product.etat,
     });
-    setPreviewImages(product.images.map(img => ({ file: null, preview: img })));
+    setPreviewImages((product.images || []).map(img => ({ file: null, preview: getImageUrl(img) })));
     setIsAddProductModalOpen(true);
   };
 
@@ -212,6 +214,11 @@ const ProductsPage = () => {
   const getCategoryName = (categoryId) => {
     const category = categories.find((cat) => cat.id === categoryId);
     return category ? category.name : "Unknown Category";
+  };
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "/placeholder.svg?height=80&width=80";
+    return imagePath.startsWith("http") ? imagePath : `http://localhost:5000${imagePath}`;
   };
 
   return (
@@ -272,7 +279,7 @@ const ProductsPage = () => {
                     {products.length > 0 ? (
                       products
                         .filter(product =>
-                          product.nom.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          String(product.nom || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
                           getCategoryName(product.categorie_id).toLowerCase().includes(searchTerm.toLowerCase())
                         )
                         .map((product) => (
@@ -280,8 +287,8 @@ const ProductsPage = () => {
                             <td>
                               <img
                                 src={
-                                  product.images.length > 0
-                                    ? product.images[0]
+                                  product.images?.length > 0
+                                    ? getImageUrl(product.images[0])
                                     : "/placeholder.svg?height=80&width=80"
                                 }
                                 alt={product.nom}
@@ -294,10 +301,22 @@ const ProductsPage = () => {
                             <td>{product.quantite_stock}</td>
                             <td>{product.etat}</td>
                             <td>
-                              <button className="action-btn edit" onClick={() => handleEditProduct(product)}>
+                              <button
+                                type="button"
+                                className="action-btn edit"
+                                onClick={() => handleEditProduct(product)}
+                                aria-label={`Edit ${product.nom}`}
+                                title="Edit product"
+                              >
                                 <Edit size={16} />
                               </button>
-                              <button className="action-btn delete" onClick={() => handleDeleteProduct(product._id)}>
+                              <button
+                                type="button"
+                                className="action-btn delete"
+                                onClick={() => handleDeleteProduct(product._id)}
+                                aria-label={`Delete ${product.nom}`}
+                                title="Delete product"
+                              >
                                 <Trash2 size={16} />
                               </button>
                             </td>

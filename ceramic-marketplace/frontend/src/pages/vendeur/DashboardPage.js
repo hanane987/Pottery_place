@@ -9,6 +9,7 @@ import { DollarSign, ShoppingBag, Package, BarChart2 } from "lucide-react";
 
 const DashboardPage = () => {
   const [vendorId, setVendorId] = useState(null);
+  const [vendorName, setVendorName] = useState("Vendor");
   const [activeSection, setActiveSection] = useState("dashboard");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [products, setProducts] = useState([]);
@@ -17,10 +18,11 @@ const DashboardPage = () => {
   const [loading, setLoading] = useState(true);
 
   const categories = [
-    { id: "60b8d8f9e3c1f8c1d4e0e1a1", name: "Category 1" },
-    { id: "60b8d8f9e3c1f8c1d4e0e1a2", name: "Category 2" },
-    { id: "60b8d8f9e3c1f8c1d4e0e1a3", name: "Category 3" },
-    { id: "60b8d8f9e3c1f8c1d4e0e1a4", name: "Category 4" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a1", name: "Vases" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a4", name: "Bowls" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a2", name: "Plates" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a3", name: "Mugs" },
+    { id: "60b8d8f9e3c1f8c1d4e0e1a5", name: "Decorative" },
   ];
 
   useEffect(() => {
@@ -30,6 +32,7 @@ const DashboardPage = () => {
         const decodedToken = jwtDecode(token);
         console.log("Decoded Token:", decodedToken);
         setVendorId(decodedToken.id);
+        setVendorName(decodedToken.name || decodedToken.email || "Vendor");
       } catch (error) {
         console.error("Error decoding token:", error);
       }
@@ -62,7 +65,7 @@ const DashboardPage = () => {
 
   const fetchOrders = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/reservations/vendor/${vendorId}`);
+      const response = await axios.get(`http://localhost:5000/api/vendor/${vendorId}`);
       console.log("Fetched Orders:", response.data);
       setOrders(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
@@ -75,8 +78,16 @@ const DashboardPage = () => {
     if (vendorId) {
       fetchProducts();
       fetchOrders();
+      axios.get(`http://localhost:5000/api/users/${vendorId}`)
+        .then((response) => setVendorName(response.data.name || response.data.email || "Vendor"))
+        .catch((error) => console.error("Error fetching vendor profile:", error));
     }
   }, [vendorId, fetchProducts, fetchOrders]);
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "/placeholder.svg?height=80&width=80";
+    return imagePath.startsWith("http") ? imagePath : `http://localhost:5000${imagePath}`;
+  };
 
   const getCategoryName = (categoryId) => {
     const category = categories.find((cat) => cat.id === categoryId);
@@ -88,7 +99,8 @@ const DashboardPage = () => {
       console.warn("Order with missing productId:", order);
       return sum;
     }
-    return sum + (order.productId.prix * order.quantity);
+    const total = Number(order.productId.prix) * Number(order.quantity);
+    return Number.isFinite(total) ? sum + total : sum;
   }, 0);
 
   const totalOrders = orders.length;
@@ -127,6 +139,7 @@ const DashboardPage = () => {
           setSearchTerm={setSearchTerm}
           mobileMenuOpen={mobileMenuOpen}
           setMobileMenuOpen={setMobileMenuOpen}
+          userName={vendorName}
         />
         <div className="dashboard-content">
           {loading ? (
@@ -178,12 +191,14 @@ const DashboardPage = () => {
                   <div className="section-header">
                     <h3>Recent Orders</h3>
                   </div>
-                  <table>
+                  <table className="recent-orders-table">
                     <thead>
                       <tr>
-                        <th>Order ID</th>
+                        <th>Image</th>
                         <th>Product</th>
-                        <th>Customer ID</th>
+                        <th>Buyer</th>
+                        <th>Email</th>
+                        <th>Pickup Address</th>
                         <th>Quantity</th>
                         <th>Total</th>
                         <th>Reserved At</th>
@@ -192,13 +207,21 @@ const DashboardPage = () => {
                     <tbody>
                       {orders.slice(0, 5).map((order) => (
                         <tr key={order._id}>
-                          <td>{order._id}</td>
+                          <td>
+                            <img
+                              className="order-product-thumbnail"
+                              src={getImageUrl(order.productId?.images?.[0])}
+                              alt={order.productId?.nom || "Product"}
+                            />
+                          </td>
                           <td>{order.productId ? order.productId.nom : "Product Not Found"}</td>
-                          <td>{order.userId._id}</td>
+                          <td>{order.name || order.userId?.name || "Unknown buyer"}</td>
+                          <td>{order.email || order.userId?.email || "-"}</td>
+                          <td>{order.address || "-"}</td>
                           <td>{order.quantity}</td>
                           <td>
-                            {order.productId
-                              ? `$${(order.productId.prix * order.quantity).toFixed(2)}`
+                            {Number.isFinite(Number(order.productId?.prix) * Number(order.quantity))
+                              ? `$${(Number(order.productId.prix) * Number(order.quantity)).toFixed(2)}`
                               : "N/A"}
                           </td>
                           <td>{new Date(order.reservedAt).toLocaleString()}</td>
@@ -206,7 +229,7 @@ const DashboardPage = () => {
                       ))}
                       {orders.length === 0 && (
                         <tr>
-                          <td colSpan="6">No recent orders</td>
+                          <td colSpan="8">No recent orders</td>
                         </tr>
                       )}
                     </tbody>
@@ -226,7 +249,7 @@ const DashboardPage = () => {
                         <img
                           src={
                             product.images.length > 0
-                              ? product.images[0]
+                              ? getImageUrl(product.images[0])
                               : "/placeholder.svg?height=80&width=80"
                           }
                           alt={product.nom}

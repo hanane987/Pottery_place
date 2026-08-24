@@ -1,9 +1,9 @@
 
 
-const Reservation = require('../models/Reservation');
-const Product = require('../models/Product');
+import Reservation from '../models/Reservation.js';
+import Product from '../models/Product.js';
 
-exports.createReservation = async (req, res) => {
+export const createReservation = async (req, res) => {
     const { items } = req.body;
 
     if (!items || !Array.isArray(items) || items.length === 0) {
@@ -20,11 +20,11 @@ exports.createReservation = async (req, res) => {
             }
 
             const product = await Product.findById(productId);
-            console.log(`Product ID: ${productId}, Available Stock: ${product.quantite_stock}, Requested Quantity: ${quantity}`);
 
             if (!product) {
                 return res.status(400).json({ error: `Product ${productId} not found` });
             }
+            console.log(`Product ID: ${productId}, Available Stock: ${product.quantite_stock}, Requested Quantity: ${quantity}`);
             if (product.quantite_stock < quantity) {
                 return res.status(400).json({ 
                     error: `Product ${product.nom} not available in requested quantity. Requested: ${quantity}, Available: ${product.quantite_stock}` 
@@ -57,11 +57,11 @@ exports.createReservation = async (req, res) => {
     }
 };
 
-exports.getAllReservations = async (req, res) => {
+export const getAllReservations = async (req, res) => {
     try {
         const reservations = await Reservation.find()
             .populate('productId')
-            .populate('userId', 'nom email');
+            .populate('userId', 'name email');
         res.json(reservations);
     } catch (error) {
         console.error("Error fetching reservations:", error);
@@ -69,12 +69,12 @@ exports.getAllReservations = async (req, res) => {
     }
 };
 
-exports.getOrdersByVendor = async (req, res) => {
+export const getOrdersByVendor = async (req, res) => {
     const vendorId = req.params.vendorId;
     try {
         const orders = await Reservation.find({ vendorId })
             .populate('productId')
-            .populate('userId', 'nom email');
+            .populate('userId', 'name email');
         res.json(orders);
     } catch (error) {
         console.error("Error fetching orders:", error);

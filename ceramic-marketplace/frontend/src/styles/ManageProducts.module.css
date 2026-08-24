@@ -466,7 +466,7 @@
     opacity: 1;
     visibility: visible;
   }
-  
+
   /* Enhanced Form Elements */
   .inputGroup {
     position: relative;
@@ -499,6 +499,7 @@
     font-size: 0.8rem;
     margin-bottom: 0.5rem;
   }
+
   
   .productStock {
     font-size: 0.9rem;
@@ -553,6 +554,310 @@
   .dropZone span {
     color: var(--accent-color);
     font-weight: 600;
+  }
+
+  /* Premium ceramic product cards */
+  .productList {
+    justify-content: center;
+    grid-template-columns: repeat(auto-fit, minmax(275px, 330px));
+    gap: 1.75rem;
+  }
+
+  .productItem {
+    overflow: hidden;
+    border: 1px solid #eadfd5;
+    border-radius: 8px;
+    background: #fffdf9;
+    box-shadow: 0 14px 28px rgba(77, 58, 45, 0.12);
+    cursor: pointer;
+    transition: transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+  }
+
+  .productItem:hover {
+    border-color: #e5a16d;
+    box-shadow: 0 22px 42px rgba(77, 58, 45, 0.19);
+    transform: translateY(-8px);
+  }
+
+  .productImage {
+    display: block;
+    width: 100%;
+    height: 218px;
+    border-bottom: 0;
+    background: #eee4d9;
+    object-fit: cover;
+    transition: transform 400ms ease, filter 400ms ease;
+  }
+
+  .productItem:hover .productImage {
+    filter: saturate(1.08) contrast(1.02);
+    transform: scale(1.04);
+  }
+
+  .productItem::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 4px;
+    background: var(--gold-gradient);
+    content: "";
+  }
+
+  .productItem::before {
+    top: 14px;
+    right: 14px;
+    padding: 0.45rem 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 4px;
+    background: rgba(44, 62, 80, 0.88);
+    box-shadow: 0 5px 14px rgba(35, 49, 58, 0.2);
+    color: #ffffff;
+    font-size: 0.68rem;
+    letter-spacing: 0.08em;
+  }
+
+  .productItem[data-status="disponible"]::before {
+    background: rgba(39, 174, 96, 0.92);
+  }
+
+  .productItem[data-status="épuisé"]::before {
+    background: rgba(192, 57, 43, 0.92);
+  }
+
+  .productDetails {
+    padding: 1.35rem 1.4rem 1.5rem;
+    text-align: center;
+  }
+
+  .productDetails h4 {
+    min-height: 0;
+    margin-bottom: 0.6rem;
+    color: #2c3e50;
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .productDetails .productDescription {
+    display: block;
+    min-height: 2.7rem;
+    margin: 0 auto 0.9rem;
+    overflow: hidden;
+    color: #7a6d64;
+    font-size: 0.86rem;
+    font-weight: 400;
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  .productDetails .productDescription::after {
+    display: none;
+  }
+
+  .productDetails p:not(.productDescription) {
+    display: block;
+    margin: 0 auto 0.95rem;
+    color: #d35400;
+    font-size: 1.35rem;
+    font-weight: 800;
+    text-align: center;
+  }
+
+  .productDetails p:not(.productDescription)::after {
+    left: 50%;
+    transform: translateX(-50%);
+    width: 34px;
+    background: #e67e22;
+  }
+
+  .productStock {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    margin: 0 auto 1.2rem;
+    padding: 0.42rem 0.72rem;
+    border-radius: 999px;
+    background: #f2f4f1;
+    font-size: 0.78rem;
+    font-weight: 700;
+  }
+
+  .productStock.inStock {
+    background: #e4f3e9;
+  }
+
+  .productStock.outOfStock {
+    background: #fbe7e4;
+  }
+
+  .buttonGroup {
+    justify-content: center;
+    gap: 0.65rem;
+    margin-top: 0;
+  }
+
+  .editButton,
+  .deleteButton {
+    flex: 1;
+    justify-content: center;
+    min-height: 40px;
+    margin-right: 0;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .editButton {
+    background: #2c3e50;
+    color: #ffffff;
+  }
+
+  .editButton:hover {
+    background: #1d2a35;
+  }
+
+  .deleteButton {
+    background: #fff0eb;
+    border: 1px solid #efc2b7;
+    color: #c0392b;
+  }
+
+  .deleteButton:hover {
+    background: #c0392b;
+    color: #ffffff;
+  }
+
+  @media (max-width: 576px) {
+    .productList {
+      grid-template-columns: minmax(0, 330px);
+    }
+  }
+
+  /* Center the product form content without changing its existing visual language. */
+  .form {
+    width: min(100%, 900px);
+    margin: 0 auto 2rem;
+    padding: 2.25rem;
+  }
+
+  .container {
+    width: min(1080px, calc(100% - 328px));
+    margin: 0 24px 0 304px;
+  }
+
+  .sectionTitle {
+    text-align: center;
+    border-bottom: 0;
+    padding-bottom: 0.35rem;
+  }
+
+  .sectionTitle::after {
+    display: block;
+    width: 52px;
+    height: 3px;
+    margin: 0.55rem auto 0;
+    border-radius: 4px;
+    background: var(--gold-gradient);
+    content: "";
+  }
+
+  .inputGroup {
+    text-align: center;
+  }
+
+  .inputGroup label {
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .inputGroup input,
+  .inputGroup textarea,
+  .inputGroup select {
+    text-align: center;
+  }
+
+  .inputGroup input[name="prix"] {
+    appearance: textfield;
+  }
+
+  .inputGroup input[name="prix"]::-webkit-inner-spin-button,
+  .inputGroup input[name="prix"]::-webkit-outer-spin-button {
+    display: none;
+    margin: 0;
+  }
+
+  .inputGroup select,
+  .inputGroup select option {
+    color: #111111 !important;
+    background-color: #ffffff !important;
+  }
+
+  .inputGroup select {
+    -webkit-text-fill-color: #111111 !important;
+  }
+
+  .dropZone {
+    width: min(100%, 680px);
+    margin: 0 auto;
+  }
+
+  .submitButton {
+    width: min(100%, 360px);
+    grid-column: 1 / -1;
+    margin: 1rem auto 0;
+  }
+
+  .container {
+    width: min(1200px, calc(100% - 328px));
+    margin: 0 24px 0 304px;
+    padding-top: 7rem;
+  }
+
+  .form {
+    width: min(100%, 860px);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .productList {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    justify-content: center;
+    gap: 2rem;
+  }
+
+  .productItem {
+    min-width: 0;
+  }
+
+  @media (max-width: 900px) {
+    .container {
+      width: calc(100% - 48px);
+      margin: 0 24px;
+    }
+
+    .productList {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+
+  @media (max-width: 576px) {
+    .container {
+      width: calc(100% - 28px);
+      margin: 0 14px;
+    }
+
+    .form {
+      padding: 1.5rem 1rem;
+    }
+
+    .inputGroup label {
+      font-size: 0.72rem;
+    }
+
+    .productList {
+      grid-template-columns: minmax(0, 330px);
+    }
   }
   
   

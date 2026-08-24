@@ -19,7 +19,7 @@ const About = () => {
         <section className="about-hero">
           <div className="hero-image-container">
             <img 
-              src="/images/FIL6.jpg" 
+              src="/images/colors.jpg" 
               alt="Artisan Pottery Workshop" 
               className="hero-image"
             />
@@ -169,7 +169,7 @@ const About = () => {
               <div className="artisan-card">
                 <div className="artisan-image-container">
                   <img 
-                    src="/images/FIL6.jpg" 
+                    src="/images/test.jpg" 
                     alt="Elena Rodriguez" 
                     className="artisan-image"
                   />

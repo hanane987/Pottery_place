@@ -4,6 +4,7 @@ import { useState } from "react"
 import axios from "axios"
 import { User, Mail, Lock, UserPlus, Users } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { toast } from "react-toastify"
 import styles from "../../styles/Login.module.css"
 
 const Register = () => {
@@ -32,10 +33,10 @@ const Register = () => {
     }
     try {
       await axios.post("http://localhost:5000/api/auth/register", { name, email, password, role })
-      alert("Registration successful")
+      toast.success("Registration successful")
       navigate("/login")
     } catch (err) {
-      setError("Error registering user")
+      setError(err.response?.data?.message || "Error registering user")
     }
   }
 
@@ -83,7 +84,7 @@ const Register = () => {
             <select value={role} onChange={(e) => setRole(e.target.value)}>
               <option value="acheteur">Acheteur</option>
               <option value="vendeur">Vendeur</option>
-              <option value="admin">Admin</option>
+              {/* <option value="admin">Admin</option> */}
             </select>
           </div>
 

@@ -187,6 +187,7 @@ button:hover {
     transition: var(--transition);
     background-color: #f5f7fa;
     min-height: 100vh;
+    padding-top: 7rem;
   }
   
   /* Navbar Styles */
@@ -197,6 +198,15 @@ button:hover {
     padding: 1rem 0;
     margin-bottom: 2rem;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: var(--sidebar-width);
+    z-index: 900;
+    padding-right: 2rem;
+    padding-left: 2rem;
+    background: rgba(255, 255, 255, 0.96);
+    backdrop-filter: blur(10px);
   }
   
   .searchContainer {
@@ -230,6 +240,52 @@ button:hover {
     align-items: center;
     gap: 1.5rem;
   }
+
+  .notificationButton {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.55rem;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: var(--secondary-color);
+    cursor: pointer;
+  }
+
+  .notificationButton:hover {
+    background: rgba(230, 126, 34, 0.12);
+    color: var(--accent-color);
+  }
+
+  .notificationDot {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 7px;
+    height: 7px;
+    border: 2px solid var(--card-bg);
+    border-radius: 50%;
+    background: var(--danger-color);
+  }
+
+  .adminProfile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: var(--text-dark);
+    line-height: 1.25;
+  }
+
+  .adminProfile strong {
+    font-size: 0.92rem;
+  }
+
+  .adminProfile span {
+    color: var(--secondary-color);
+    font-size: 0.74rem;
+  }
   
   .userInfo i {
     font-size: 1.2rem;
@@ -257,6 +313,24 @@ button:hover {
     border: 2px solid var(--accent-color);
     cursor: pointer;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .adminProfile {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    color: var(--text-dark);
+    line-height: 1.25;
+  }
+
+  .adminProfile strong {
+    font-size: 0.95rem;
+  }
+
+  .adminProfile span {
+    color: var(--secondary-color);
+    font-size: 0.75rem;
+    text-transform: capitalize;
   }
   
   /* Welcome Header */

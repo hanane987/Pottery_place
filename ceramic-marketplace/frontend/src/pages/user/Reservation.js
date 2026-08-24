@@ -26,7 +26,17 @@ const Reservation = () => {
       try {
         const decoded = jwtDecode(token)
         setUserId(decoded.id)
+        setName(decoded.name || "")
         setEmail(decoded.email || "")
+        fetch(`http://localhost:5000/api/users/${decoded.id}`)
+          .then((response) => response.ok ? response.json() : null)
+          .then((user) => {
+            if (user) {
+              setName(user.name || "")
+              setEmail(user.email || "")
+            }
+          })
+          .catch((error) => console.error("Error fetching buyer profile:", error))
       } catch (error) {
         console.error("Error decoding token:", error)
         toast.error("Authentication error. Please log in again.")
@@ -144,7 +154,6 @@ const Reservation = () => {
       }
 
       toast.success(data.message || "Reservation successful!")
-      alert("Reservation successful!")
       setCart([])
       localStorage.removeItem("cart")
       navigate("/shop")

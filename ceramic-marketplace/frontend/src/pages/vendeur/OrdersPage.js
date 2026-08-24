@@ -32,7 +32,7 @@ const OrdersPage = () => {
   
   const fetchOrders = useCallback(async () => {
     try {
-      const response = await axios.get(`http://localhost:5000/api/reservations/vendor/${vendorId}`);
+      const response = await axios.get(`http://localhost:5000/api/vendor/${vendorId}`);
       console.log("Fetched Orders:", response.data);
       setOrders(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
@@ -46,6 +46,11 @@ const OrdersPage = () => {
       fetchOrders();
     }
   }, [vendorId, fetchOrders]);
+
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "/placeholder.svg?height=64&width=64";
+    return imagePath.startsWith("http") ? imagePath : `http://localhost:5000${imagePath}`;
+  };
 
 
   return (
@@ -84,9 +89,11 @@ const OrdersPage = () => {
               <table className="orders-table">
                 <thead>
                   <tr>
-                    <th>Order ID</th>
+                    <th>Image</th>
                     <th>Product</th>
-                    <th>Customer ID</th>
+                    <th>Buyer</th>
+                    <th>Email</th>
+                    <th>Pickup Address</th>
                     <th>Quantity</th>
                     <th>Total</th>
                     <th>Reserved At</th>
@@ -97,18 +104,27 @@ const OrdersPage = () => {
                   {orders.length > 0 ? (
                     orders
                       .filter(order =>
-                        (order.productId && order.productId.nom.toLowerCase().includes(searchTerm.toLowerCase())) ||
-                        order._id.toLowerCase().includes(searchTerm.toLowerCase())
+                        String(order.productId?.nom || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        String(order.name || order.userId?.name || "").toLowerCase().includes(searchTerm.toLowerCase()) ||
+                        String(order.email || order.userId?.email || "").toLowerCase().includes(searchTerm.toLowerCase())
                       )
                       .map((order) => (
                         <tr key={order._id}>
-                          <td>{order._id}</td>
+                          <td>
+                            <img
+                              className="order-product-thumbnail"
+                              src={getImageUrl(order.productId?.images?.[0])}
+                              alt={order.productId?.nom || "Product"}
+                            />
+                          </td>
                           <td>{order.productId ? order.productId.nom : "Product Not Found"}</td>
-                          <td>{order.userId._id}</td>
+                          <td>{order.name || order.userId?.name || "Unknown buyer"}</td>
+                          <td>{order.email || order.userId?.email || "-"}</td>
+                          <td>{order.address || "-"}</td>
                           <td>{order.quantity}</td>
                           <td>
-                            {order.productId
-                              ? `$${(order.productId.prix * order.quantity).toFixed(2)}`
+                            {Number.isFinite(Number(order.productId?.prix) * Number(order.quantity))
+                              ? `$${(Number(order.productId.prix) * Number(order.quantity)).toFixed(2)}`
                               : "N/A"}
                           </td>
                           <td>{new Date(order.reservedAt).toLocaleString()}</td>
@@ -117,7 +133,7 @@ const OrdersPage = () => {
                       ))
                   ) : (
                     <tr>
-                      <td colSpan="7">No orders available</td>
+                      <td colSpan="9">No orders available</td>
                     </tr>
                   )}
                 </tbody>

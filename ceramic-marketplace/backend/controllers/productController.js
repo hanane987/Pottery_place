@@ -1,9 +1,14 @@
-const Product = require('../models/Product');
-const multer = require('multer');
+import Product from '../models/Product.js';
+import multer from 'multer';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, 'uploads/');
+        cb(null, path.join(__dirname, '../uploads'));
     },
     filename: (req, file, cb) => {
         cb(null, Date.now() + '-' + file.originalname);
@@ -12,18 +17,17 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-exports.getAllProducts = async (req, res) => {
+export const getAllProducts = async (req, res) => {
     try {
         const products = await Product.find({});
-        if (products.length === 0) return res.status(404).json({ message: "No products found." });
-        res.json(products);
+        res.status(200).json(products);
     } catch (error) {
         console.error('Error fetching all products:', error);
         res.status(500).json({ error: 'Error fetching all products', details: error.message });
     }
 };
 
-exports.createProduct = (req, res) => {
+export const createProduct = (req, res) => {
     upload.array('images')(req, res, async (err) => {
         if (err) {
             console.error('Multer error:', err);
@@ -31,7 +35,7 @@ exports.createProduct = (req, res) => {
         }
 
         try {
-            const { nom, description, prix, quantite_stock, artisan_id, etat } = req.body;
+            const { nom, description, prix, quantite_stock, artisan_id, categorie_id, etat } = req.body;
             const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : [];
 
             // Validate artisan_id
@@ -45,6 +49,7 @@ exports.createProduct = (req, res) => {
                 prix,
                 quantite_stock,
                 artisan_id,
+                categorie_id,
                 images,
                 etat,
             });
@@ -60,7 +65,7 @@ exports.createProduct = (req, res) => {
 
 
 
-exports.updateProduct = (req, res) => {
+export const updateProduct = (req, res) => {
     upload.array('images')(req, res, async (err) => {
         if (err) {
             console.error('Multer error:', err);
@@ -69,7 +74,7 @@ exports.updateProduct = (req, res) => {
 
         try {
             const { id } = req.params;
-            const { nom, description, prix, quantite_stock, artisan_id, etat } = req.body;
+            const { nom, description, prix, quantite_stock, artisan_id, categorie_id, etat } = req.body;
             const images = req.files ? req.files.map(file => `/uploads/${file.filename}`) : undefined;
 
             const updatedProduct = await Product.findByIdAndUpdate(
@@ -80,6 +85,7 @@ exports.updateProduct = (req, res) => {
                     prix,
                     quantite_stock,
                     artisan_id,
+                    categorie_id,
                     etat,
                     ...(images && { images }), // Only update images if new ones are uploaded
                 },
@@ -98,7 +104,7 @@ exports.updateProduct = (req, res) => {
 };
 
 
-exports.deleteProduct = async (req, res) => {
+export const deleteProduct = async (req, res) => {
     try {
         const deletedProduct = await Product.findByIdAndDelete(req.params.id);
         if (!deletedProduct) {
@@ -113,7 +119,7 @@ exports.deleteProduct = async (req, res) => {
 
 
 
-exports.getProductById = async (req, res) => {
+export const getProductById = async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
         if (!product) {
@@ -128,7 +134,7 @@ exports.getProductById = async (req, res) => {
 
 
 
-exports.getProductsByVendor = async (req, res) => {
+export const getProductsByVendor = async (req, res) => {
     const artisan_id = req.query.artisan_id;
     try {
         if (!artisan_id) {

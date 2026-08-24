@@ -6,7 +6,8 @@ const Sidebar = ({ activeSection, setActiveSection, mobileMenuOpen, setMobileMen
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    navigate('/login');
+    localStorage.removeItem('cart');
+    navigate('/');
   };
 
   return (

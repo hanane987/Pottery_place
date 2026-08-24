@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const reservationSchema = new mongoose.Schema({
     productId: { type: mongoose.Schema.Types.ObjectId, required: true, ref: 'Product' },
@@ -13,4 +13,4 @@ const reservationSchema = new mongoose.Schema({
 });
 
 const Reservation = mongoose.model('Reservation', reservationSchema);
-module.exports = Reservation;
+export default Reservation;

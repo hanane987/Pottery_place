@@ -70,3 +70,158 @@
   cursor: pointer;
   color: #333;
 }
+
+.container {
+  min-height: calc(100vh - 4rem);
+  margin: 0;
+  padding: 2rem 24px 56px;
+  background: #f5f7fa;
+}
+
+.container h1 {
+  width: min(1280px, 100%);
+  margin: 0 auto 24px;
+  color: #23313a;
+  font-size: clamp(1.8rem, 3vw, 2.7rem);
+  text-align: left;
+}
+
+.container h1::after {
+  display: block;
+  width: 56px;
+  height: 4px;
+  margin-top: 10px;
+  border-radius: 4px;
+  background: #d86f5f;
+  content: "";
+}
+
+.container > .table,
+.table {
+  width: min(1280px, 100%);
+  margin: 0 auto;
+  overflow: hidden;
+  border: 1px solid #dce5e3;
+  border-radius: 14px;
+  border-spacing: 0;
+  background: #ffffff;
+  box-shadow: 0 18px 45px rgba(35, 49, 58, 0.1);
+}
+
+.table th,
+.table td {
+  padding: 18px 22px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.table th {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+  background: #23313a;
+  color: #f4fbf8;
+  font-size: 0.76rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.table td {
+  border-bottom: 1px solid #dce5e3;
+  color: #6e7d82;
+  font-size: 0.96rem;
+}
+
+.table tbody tr {
+  transition: background-color 180ms ease;
+}
+
+.table tbody tr:hover {
+  background: #f3faf7;
+}
+
+.table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.table td:nth-child(4) {
+  max-width: 300px;
+  line-height: 1.5;
+}
+
+.statusBadge {
+  display: inline-flex;
+  padding: 0.38rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.statusRead {
+  background: #e4f3e9;
+  color: #287b67;
+}
+
+.statusNew {
+  background: #dcefe8;
+  color: #287b67;
+}
+
+.actionButton {
+  margin: 0.2rem;
+  padding: 0.55rem 0.75rem;
+  border: 1px solid transparent;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: transform 180ms ease, background-color 180ms ease;
+}
+
+.actionButton:hover {
+  transform: translateY(-1px);
+}
+
+.viewButton {
+  background: #e8f5f0;
+  border-color: #b9dfd1;
+  color: #287b67;
+}
+
+.viewButton:hover {
+  background: #287b67;
+  color: #fff;
+}
+
+.deleteButton {
+  background: #fff4f1;
+  border-color: #f2c8c0;
+  color: #b34e40;
+}
+
+.deleteButton:hover {
+  background: #b34e40;
+  color: #fff;
+}
+
+.emptyState {
+  width: min(720px, 100%);
+  margin: 0 auto;
+  padding: 4rem 2rem;
+  border: 1px dashed #dce5e3;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #6e7d82;
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .container {
+    margin-left: 0;
+  }
+
+  .table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

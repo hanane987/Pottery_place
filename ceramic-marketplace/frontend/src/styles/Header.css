@@ -16,6 +16,16 @@
     align-items: center;
     justify-content: space-between;
   }
+
+  .pottery-header .pottery-container .pottery-nav {
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  .pottery-header .pottery-logo {
+    flex: 0 0 auto;
+    margin: 0;
+  }
   
   .pottery-logo .logo-link {
     display: flex;
@@ -34,6 +44,8 @@
   .pottery-nav-links {
     display: flex;
     gap: 2.5rem;
+    margin: 0 auto;
+    padding-left: 6rem;
   }
   
   .nav-link {
@@ -52,6 +64,7 @@
     display: flex;
     gap: 1.5rem;
     position: relative;
+    margin-left: auto;
   }
   
   /* Adjusted styles for icon buttons in the header */
@@ -59,13 +72,52 @@
     background: none;
     border: none;
     cursor: pointer;
-    margin-left: 90px;
+    margin-left: 0;
     position: relative;
-    width: 119px;
+    width: 40px;
     height: 45px;
+    display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+  }
+
+  .pottery-nav-actions {
+    align-items: center;
+  }
+
+  @media (max-width: 768px) {
+    .pottery-header .pottery-container .pottery-nav {
+      gap: 0.75rem;
+    }
+
+    .pottery-nav-links {
+      gap: 1rem;
+      padding-left: 2rem;
+    }
+
+    .pottery-nav-actions {
+      gap: 0.4rem;
+    }
+  }
+
+  .auth-nav-button {
+    width: auto !important;
+    min-width: 92px;
+    padding: 0 14px;
+    gap: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    border-radius: 22px !important;
+    color: #fff !important;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .auth-nav-button span {
+    white-space: nowrap;
+  }
+
+  .auth-nav-button:hover {
+    background: rgba(255, 255, 255, 0.12) !important;
   }
   
   .action-icon {
@@ -254,4 +306,35 @@
     border-radius: 0 !important;
     box-shadow: none; /* Remove shadow when disabled */
     cursor: not-allowed;
+  }
+
+  .auth-nav-button {
+    width: auto !important;
+    min-width: 92px;
+    padding: 0 14px;
+    gap: 7px;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    border-radius: 22px !important;
+    color: #fff !important;
+    font-size: 0.82rem;
+    font-weight: 700;
+  }
+
+  .auth-nav-button span {
+    white-space: nowrap;
+  }
+
+  .auth-nav-button:hover {
+    background: rgba(255, 255, 255, 0.2) !important;
+  }
+
+  @media (max-width: 576px) {
+    .auth-nav-button {
+      min-width: 40px;
+      padding: 0;
+    }
+
+    .auth-nav-button span {
+      display: none;
+    }
   }

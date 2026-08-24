@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import '../styles/Contact.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { toast } from 'react-toastify';
 
 const App = () => {
   const [formData, setFormData] = useState({
@@ -32,14 +33,14 @@ const App = () => {
         });
 
         if (response.ok) {
-            alert('Message stored successfully!');
+            toast.success('Message stored successfully!');
             setFormData({ name: '', email: '', subject: '', message: '' }); 
         } else {
-            alert('Failed to store message. Please try again.');
+            toast.error('Failed to store message. Please try again.');
         }
     } catch (error) {
         console.error('Error storing message:', error);
-        alert('An error occurred. Please try again later.');
+            toast.error('An error occurred. Please try again later.');
     }
 };
 return (
